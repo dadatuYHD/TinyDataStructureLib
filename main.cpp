@@ -28,7 +28,7 @@ int main(void)
     SmartPointer<Test> sp = new Test();
 
     sp->show();   //sp.operator->()->show();
-    (*sp).show(); //sp.operator*().show();
+    //(*sp).show(); //sp.operator*().show();
 
     return 0;
 }
