@@ -65,4 +65,4 @@ file_client
 .tags*
 
 #QT project files
-*.pro.*
+*.pro*
