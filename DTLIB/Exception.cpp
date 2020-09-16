@@ -1,3 +1,12 @@
+/********************************************************
+*   Copyright (C) 2020 All rights reserved.
+*
+*   Filename:Exception.c
+*   Author  :yhd
+*   Date    :2020-09-16
+*   Describe:
+*
+********************************************************/
 #include "Exception.h"
 #include <cstring>
 #include <cstdlib>
