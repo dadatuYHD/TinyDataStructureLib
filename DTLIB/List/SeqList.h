@@ -2,7 +2,7 @@
 #define SEQLIST_H
 
 #include "List.h"
-#include "Exception.h"
+#include "Exception/Exception.h"
 
 namespace DTLib {
 

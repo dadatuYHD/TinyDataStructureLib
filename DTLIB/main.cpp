@@ -9,10 +9,10 @@
 ********************************************************/
 
 #include <iostream>
-#include "SmartPointer.h"
-#include "Exception.h"
-#include "StaticList.h"
-#include "DynamicList.h"
+#include "SmartPointer/SmartPointer.h"
+#include "Exception/Exception.h"
+#include "List/StaticList.h"
+#include "List/DynamicList.h"
 
 using namespace std;
 using namespace DTLib;
