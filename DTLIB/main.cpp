@@ -36,6 +36,7 @@ int main(void)
         cout << l[i] << endl;
     }
 
+    ////////
 
 
     return 0;
