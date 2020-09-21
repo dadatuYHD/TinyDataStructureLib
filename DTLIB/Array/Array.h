@@ -1,8 +1,8 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
-#include "/Object/Object.h"
-#include "/Exception/Exception.h"
+#include "Object/Object.h"
+#include "Exception/Exception.h"
 
 namespace DTLib {
 
@@ -24,7 +24,7 @@ public:
         return ret;
     }
 
-    virtual bool get(int i, const T& e) const
+    virtual bool get(int i, T& e) const
     {
         bool ret = ((0 <= i) && (i < length()));
 

@@ -9,32 +9,26 @@
 ********************************************************/
 
 #include <iostream>
-#include "SmartPointer/SmartPointer.h"
-#include "Exception/Exception.h"
-#include "List/StaticList.h"
-#include "List/DynamicList.h"
+#include "Array/DynamicArray.h"
 
 using namespace std;
 using namespace DTLib;
 
 int main(void)
 {
-    DynamicList<int> l(5);
+    DynamicArray<int> s1(5);
 
-    for (int i = 0; i < l.capacity(); i++)
+    for (int i = 0; i < s1.length(); i++)
     {
-        l.insert(0, i);
+        s1[i] = i * i;
     }
 
-    for (int i = 0; i < l.length(); i++)
+    for (int i = 0; i < s1.length(); i++)
     {
-        l[i] *= l[i];
+        cout << s1[i] << endl;
     }
 
-    for (int i = 0; i < l.length(); i++)
-    {
-        cout << l[i] << endl;
-    }
+
 
     return 0;
 }
