@@ -19,11 +19,21 @@ using namespace DTLib;
 
 int main(void)
 {
-    StaticList<int, 5> s1;
+    DynamicList<int> l(5);
 
-    for (int i = 0; i < s1.capacity(); i++)
+    for (int i = 0; i < l.capacity(); i++)
     {
-        s1[i] = i * i;
+        l.insert(0, i);
+    }
+
+    for (int i = 0; i < l.length(); i++)
+    {
+        l[i] *= l[i];
+    }
+
+    for (int i = 0; i < l.length(); i++)
+    {
+        cout << l[i] << endl;
     }
 
     return 0;
