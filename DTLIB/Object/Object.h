@@ -14,6 +14,8 @@ public:
     void   operator delete (void * p) throw();
     void * operator new[] (unsigned long long size) throw();
     void   operator delete[] (void * p) throw();
+    bool  operator == (const Object& obj);
+    bool  operator != (const Object& obj);
 
     virtual ~Object() = 0;
 };

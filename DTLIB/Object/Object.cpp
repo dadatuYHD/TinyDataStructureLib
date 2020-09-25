@@ -36,6 +36,15 @@ void   Object::operator delete[] (void * p) throw()
     free(p);
 }
 
+bool  Object::operator == (const Object& obj)
+{
+    return (this == &obj);
+}
+bool  Object::operator != (const Object& obj)
+{
+    return (this != &obj);
+}
+
 Object::~Object() {}
 
 }
