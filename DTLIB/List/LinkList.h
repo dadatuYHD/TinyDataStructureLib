@@ -22,7 +22,12 @@ protected:
         char reserved[sizeof(T)];
         Node * next;
     } m_header;
-    int m_length;
+
+    int m_length; 
+    Node * m_current;
+    int m_step;
+
+
     Node * position(int i) const
     {
         Node * ret = reinterpret_cast<Node *>(&m_header);
@@ -34,11 +39,24 @@ protected:
 
         return ret;
     }
+
+    virtual Node * create()
+    {
+        return new Node();
+    }
+
+    virtual void destory(Node * ptr)
+    {
+        delete ptr;
+    }
+
 public:
     LinkList()
     {
         m_header.next = nullptr;
         m_length = 0;
+        m_current = nullptr;
+        m_step = 1;
     }
 
     bool insert(const T& e)
@@ -52,7 +70,7 @@ public:
 
         if (ret)
         {
-            Node * node = new Node();
+            Node * node = create();
 
             if (nullptr != node)
             {
@@ -81,7 +99,7 @@ public:
             position(i)->next = toDel->next;
             toDel->next = nullptr;
 
-            delete toDel;
+            destory(toDel);
 
             m_length--;
         }
@@ -159,9 +177,52 @@ public:
 
             m_header.next = toDel->next;
 
-            delete toDel;
+            destory(toDel);
             m_length--;
         }
+    }
+
+    bool move(int i, int step = 1)
+    {
+        bool ret = ((0 <= i) && (i < m_length) && (step > 0));
+
+        if (ret)
+        {
+            m_current = position(i)->next;
+            m_step = 1;
+        }
+
+        return ret;
+    }
+
+    bool end()
+    {
+        return (m_current == nullptr);
+    }
+
+    T current()
+    {
+        if (!end())
+        {
+            return m_current->value;
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "No value at current position ...");
+        }
+    }
+
+    bool next()
+    {
+         int i = 0;
+
+         while ((i < m_step) && (!end()))
+         {
+              m_current = m_current->next;
+              i++;
+         }
+
+         return (i == m_step);
     }
 
     ~LinkList()
