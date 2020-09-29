@@ -9,23 +9,20 @@
 ********************************************************/
 
 #include <iostream>
-#include "Array/DynamicArray.h"
+#include "List/StaticLinkList.h"
 #include "List/LinkList.h"
-#include "Object/Object.h"
 
 using namespace std;
 using namespace DTLib;
 
 int main(void)
 {
-    LinkList<int> list;
+    StaticLinkList<int, 10> list;
 
-    list.insert(1);
-    list.insert(2);
-    list.insert(3);
-    list.insert(4);
-    list.insert(5);
-
+    for (int i = 0; i < 10; i++)
+    {
+        list.insert(0, i);
+    }
 
     for (list.move(0); !list.end(); list.next())
     {
