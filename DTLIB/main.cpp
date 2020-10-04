@@ -9,25 +9,47 @@
 ********************************************************/
 
 #include <iostream>
-#include "List/StaticLinkList.h"
-#include "List/LinkList.h"
+#include "Object/Object.h"
+#include "SmartPointer/SharedPointer.h"
 
 using namespace std;
 using namespace DTLib;
 
+class Test : public Object
+{
+public:
+    int value;
+
+    Test(int p) : value(p)
+    {
+        cout << "Test(int p)" << endl;
+    }
+
+    ~Test()
+    {
+        cout << "~Test()" << endl;
+    }
+
+};
+
 int main(void)
 {
-    StaticLinkList<int, 10> list;
+    SharedPointer<Test> p1 = new Test(1);
+    SharedPointer<Test> p2(p1);
+    SharedPointer<Test> p3 = nullptr;
 
-    for (int i = 0; i < 10; i++)
-    {
-        list.insert(0, i);
-    }
+    p3 = p2;
 
-    for (list.move(0); !list.end(); list.next())
-    {
-        cout << list.current() << endl;
-    }
+    p3->value = 98;
+
+    cout << p1->value << endl;
+    cout << p2->value << endl;
+    cout << p3->value << endl;
+
+    p2.clear();
+
+    cout << (p1 == p2) << endl;
+
 
     return 0;
  }

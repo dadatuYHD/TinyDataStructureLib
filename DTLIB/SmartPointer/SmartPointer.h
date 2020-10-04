@@ -1,24 +1,22 @@
 #ifndef SMARTPOINTER_H
 #define SMARTPOINTER_H
 
-#include "Object/Object.h"
+#include "SmartPointer/Pointer.h"
 
 namespace DTLib {
 
 template <typename T>
-class SmartPointer : public Object
+class SmartPointer : public Pointer<T>
 {
 protected:
     T* m_pointer;
 public:
-    SmartPointer(T* p = nullptr)
-    {
-        m_pointer = p;
-    }
+    SmartPointer(T* p = nullptr) : Pointer<T>(p)
+    {}
 
     SmartPointer(const SmartPointer<T>& obj)
     {
-        m_pointer = obj.m_pointer;
+        this->m_pointer = obj.m_pointer;
 
         const_cast<SmartPointer<T>&>(obj).m_pointer = nullptr;
     }
@@ -27,36 +25,16 @@ public:
     {
         if (this != &obj)
         {
-            delete m_pointer;
+            T * p = this->m_pointer;
 
-            m_pointer = obj.m_pointer;
+            this->m_pointer = obj.m_pointer;
 
             const_cast<SmartPointer<T>&>(obj).m_pointer = nullptr;
+
+            delete p;
         }
 
         return *this;
-    }
-
-
-
-    T* operator -> (void)
-    {
-        return m_pointer;
-    }
-
-    T& operator * (void)
-    {
-        return *m_pointer;
-    }
-
-    bool isNull(void)
-    {
-        return (m_pointer == nullptr);
-    }
-
-    T* getptr(void)
-    {
-        return m_pointer;
     }
 
     ~SmartPointer(void)

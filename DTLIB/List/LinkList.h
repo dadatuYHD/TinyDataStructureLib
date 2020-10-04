@@ -96,12 +96,16 @@ public:
         {
             Node * toDel = position(i)->next;
 
+            if (m_current == toDel)
+            {
+                m_current = toDel->next;
+            }
+
             position(i)->next = toDel->next;
             toDel->next = nullptr;
 
-            destory(toDel);
-
             m_length--;
+            destory(toDel);
         }
 
         return ret;
@@ -177,8 +181,8 @@ public:
 
             m_header.next = toDel->next;
 
-            destory(toDel);
             m_length--;
+            destory(toDel);        
         }
     }
 
