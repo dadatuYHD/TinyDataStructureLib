@@ -7,7 +7,7 @@
 
 using namespace std;
 
-namespace DTLib {
+namespace DSLib {
 
 template <typename T>
 class SharedPointer : public Pointer<T>

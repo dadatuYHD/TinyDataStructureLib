@@ -1,18 +1,18 @@
-#ifndef DYNAMICLIST_H
-#define DYNAMICLIST_H
+#ifndef DYNAMICSEQLIST_H
+#define DYNAMICSEQLIST_H
 
 #include "SeqList.h"
 #include "Exception/Exception.h"
 
-namespace DTLib {
+namespace DSLib {
 
 template <typename T>
-class DynamicList : public SeqList<T>
+class DynamicSeqList : public SeqList<T>
 {
 protected:
     int m_capacity;      //Sequential storage space size
 public:
-    DynamicList(int capacity)
+    DynamicSeqList(int capacity)
     {
         this->m_array = new T[capacity];
 
@@ -57,7 +57,7 @@ public:
             THROW_EXCEPTION(NoEnoughMemoryException, "No memory to create DynamicList object ...");
         }
     }
-    ~DynamicList()
+    ~DynamicSeqList()
     {
         delete [] this->m_array;
     }
@@ -65,4 +65,4 @@ public:
 
 }
 
-#endif // DYNAMICLIST_H
+#endif // DYNAMICSEQLIST_H

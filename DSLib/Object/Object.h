@@ -1,7 +1,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-namespace  DTLib{
+namespace  DSLib{
 
 class Object
 {

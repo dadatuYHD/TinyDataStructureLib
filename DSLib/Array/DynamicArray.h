@@ -4,7 +4,7 @@
 #include "Array.h"
 #include "Exception/Exception.h"
 
-namespace DTLib {
+namespace DSLib {
 
 template <typename T>
 class DynamicArray : public Array<T>

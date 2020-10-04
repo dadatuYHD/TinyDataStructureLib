@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace DTLib {
+namespace DSLib {
 
 void * Object::operator new (unsigned long long size) throw()
 {

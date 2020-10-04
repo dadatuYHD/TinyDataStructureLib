@@ -3,7 +3,7 @@
 
 #include "Object/Object.h"
 
-namespace DTLib {
+namespace DSLib {
 
 template <typename T>
 class List : public Object

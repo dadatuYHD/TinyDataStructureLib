@@ -1,17 +1,17 @@
-#ifndef STATICLIST_H
-#define STATICLIST_H
+#ifndef STATICSEQLIST_H
+#define STATICSEQLIST_H
 
 #include "SeqList.h"
 
-namespace DTLib {
+namespace DSLib {
 
 template <typename T, int N>
-class StaticList : public SeqList<T>
+class StaticSeqList : public SeqList<T>
 {
 protected:
     T m_space[N];        //Sequential storage space, the N is Template parameter
 public:
-    StaticList()
+    StaticSeqList()
     {
         this->m_array = m_space;
         this->m_length = 0;
@@ -25,4 +25,4 @@ public:
 
 }
 
-#endif // STATICLIST_H
+#endif // STATICSEQLIST_H

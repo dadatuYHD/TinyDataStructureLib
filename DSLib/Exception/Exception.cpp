@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace DTLib {
+namespace DSLib {
 
 void Exception::init(const char * message, const char * file, int line)
 {

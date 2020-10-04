@@ -3,7 +3,7 @@
 
 #include "Array.h"
 
-namespace DTLib {
+namespace DSLib {
 
 template <typename T, int N>
 class StaticAarray : public Array<T>

@@ -3,7 +3,7 @@
 
 #include "LinkList.h"
 
-namespace DTLib {
+namespace DSLib {
 
 template <typename T, int N>
 class StaticLinkList : public LinkList<T>

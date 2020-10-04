@@ -13,7 +13,7 @@
 #include "SmartPointer/SharedPointer.h"
 
 using namespace std;
-using namespace DTLib;
+using namespace DSLib;
 
 class Test : public Object
 {

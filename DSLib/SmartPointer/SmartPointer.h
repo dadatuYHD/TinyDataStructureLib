@@ -3,7 +3,7 @@
 
 #include "SmartPointer/Pointer.h"
 
-namespace DTLib {
+namespace DSLib {
 
 template <typename T>
 class SmartPointer : public Pointer<T>

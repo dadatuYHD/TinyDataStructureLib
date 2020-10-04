@@ -3,7 +3,7 @@
 
 #include "Object/Object.h"
 
-namespace DTLib {
+namespace DSLib {
 
 #define THROW_EXCEPTION(e, m) (throw e(m, __FILE__, __LINE__))
 
