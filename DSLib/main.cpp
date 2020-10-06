@@ -9,47 +9,73 @@
 ********************************************************/
 
 #include <iostream>
-#include "Object/Object.h"
-#include "SmartPointer/SharedPointer.h"
+#include "List/CircleLinkList.h"
+#include "List/DualLinkList.h"
 
 using namespace std;
 using namespace DSLib;
 
-class Test : public Object
+void josephus(int n, int s, int m)
 {
-public:
-    int value;
+    CircleLinkList<int> cl;
 
-    Test(int p) : value(p)
+    for (int i = 1; i <= n; i++)
     {
-        cout << "Test(int p)" << endl;
+        cl.insert(i);
     }
 
-    ~Test()
-    {
-        cout << "~Test()" << endl;
-    }
+    cl.move(s - 1, m - 1);
 
-};
+    while (cl.length() > 0)
+    {
+        cl.next();
+
+        cout << cl.current() << endl;
+
+        cl.remove(cl.find(cl.current()));
+    }
+}
 
 int main(void)
 {
-    SharedPointer<Test> p1 = new Test(1);
-    SharedPointer<Test> p2(p1);
-    SharedPointer<Test> p3 = nullptr;
+    //josephus(41, 1, 3);
+    DualLinkList<int> dl;
 
-    p3 = p2;
+    for (int i = 0; i < 5; i++)
+    {
+        dl.insert(0, i);
+        dl.insert(0, 4);
+    }
 
-    p3->value = 98;
+    for (dl.move(0); !dl.end(); dl.next())
+    {
+        cout << dl.current() << endl;
+    }
 
-    cout << p1->value << endl;
-    cout << p2->value << endl;
-    cout << p3->value << endl;
+    cout << "begin" << endl;
 
-    p2.clear();
+    dl.move(dl.length() - 1);
 
-    cout << (p1 == p2) << endl;
+    while (!dl.end())
+    {
+        if (dl.current() == 4)
+        {
+            cout << dl.current() << endl;
 
+            dl.remove(dl.find(dl.current()));
+        }
+        else
+        {
+            dl.pre();
+        }
+    }
+
+    cout << "end" << endl;
+
+    for (dl.move(0); !dl.end(); dl.next())
+    {
+        cout << dl.current() << endl;
+    }
 
     return 0;
  }

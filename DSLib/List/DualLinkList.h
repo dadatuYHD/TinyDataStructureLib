@@ -1,5 +1,5 @@
-#ifndef LINKLIST_H
-#define LINKLIST_H
+#ifndef DUALLINKLIST_H
+#define DUALLINKLIST_H
 
 #include "List.h"
 #include "Exception/Exception.h"
@@ -7,13 +7,14 @@
 namespace DSLib {
 
 template <typename T>
-class LinkList : public List<T>
+class DualLinkList : public List<T>
 {
 protected:
     struct Node : public Object
     {
         T value;
         Node * next;
+        Node * pre;
     };
 
     //mutable Node m_header;
@@ -21,9 +22,10 @@ protected:
     {
         char reserved[sizeof(T)];
         Node * next;
+        Node * pre;
     } m_header;
 
-    int m_length; 
+    int m_length;
     Node * m_current;
     int m_step;
 
@@ -51,9 +53,10 @@ protected:
     }
 
 public:
-    LinkList()
+    DualLinkList()
     {
         m_header.next = nullptr;
+        m_header.pre = nullptr;
         m_length = 0;
         m_current = nullptr;
         m_step = 1;
@@ -74,9 +77,25 @@ public:
 
             if (nullptr != node)
             {
+                Node * next = position(i)->next;
+
                 node->value = e;
-                node->next = position(i)->next;
+                node->next = next;
                 position(i)->next = node;
+
+                if (position(i) != reinterpret_cast<Node *>(&m_header))
+                {
+                    node->pre = position(i);
+                }
+                else
+                {
+                    node->pre = nullptr;
+                }
+
+                if (next != nullptr)
+                {
+                    next->pre = node;
+                }
 
                 m_length++;
             }
@@ -88,6 +107,7 @@ public:
 
         return ret;
     }
+
     bool remove(int i)
     {
         bool ret = ((0 <= i) && (i < m_length));
@@ -95,14 +115,19 @@ public:
         if (ret)
         {
             Node * toDel = position(i)->next;
+            Node * next = toDel->next;
 
             if (m_current == toDel)
             {
-                m_current = toDel->next;
+                m_current = next;
             }
 
-            position(i)->next = toDel->next;
-            toDel->next = nullptr;
+            position(i)->next = next;
+
+            if (next != nullptr)
+            {
+                next->pre = toDel->pre;
+            }
 
             m_length--;
             destory(toDel);
@@ -175,14 +200,9 @@ public:
     }
     void clear()
     {
-        while (m_header.next)
+        while (m_length > 0)
         {
-            Node * toDel = m_header.next;
-
-            m_header.next = toDel->next;
-
-            m_length--;
-            destory(toDel);        
+            remove(0);
         }
     }
 
@@ -229,7 +249,20 @@ public:
          return (i == m_step);
     }
 
-    ~LinkList()
+    virtual bool pre()
+    {
+        int i = 0;
+
+        while ((i < m_step) && (!end()))
+        {
+             m_current = m_current->pre;
+             i++;
+        }
+
+        return (i == m_step);
+    }
+
+    ~DualLinkList()
     {
         clear();
     }
@@ -237,5 +270,4 @@ public:
 
 }
 
-
-#endif // LINKLIST_H
+#endif // DUALLINKLIST_H

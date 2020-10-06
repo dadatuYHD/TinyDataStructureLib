@@ -19,6 +19,11 @@ protected:
     {
         last()->next = this->m_header.next;
     }
+
+    int mod(int i) const
+    {
+        return (i % this->m_length);
+    }
 public:
     bool insert(const T& e)
     {
@@ -31,7 +36,7 @@ public:
 
         i = i % (this->m_length + 1);
 
-        ret = LinkList<T>::insert(e, i);
+        ret = LinkList<T>::insert(i, e);
 
         if (ret && (i == 0))
         {
@@ -86,7 +91,73 @@ public:
         return ret;
     }
 
+    bool set(int i, const T& e)
+    {
+        return LinkList<T>::set(mod(i), e);
+    }
 
+    T get(int i) const
+    {
+        return LinkList<T>::get(mod(i));
+    }
+
+    bool get(int i, T& e) const
+    {
+        return LinkList<T>::get(i, e);
+    }
+
+    int find(const T& e) const
+    {
+        int ret = -1;
+        Node * slider = this->m_header.next;
+
+        for (int i = 0; i < this->m_length; i++)
+        {
+            if (slider->value == e)
+            {
+                ret = i;
+                break;
+            }
+
+            slider = slider->next;
+        }
+
+        return ret;
+    }
+
+    void clear()
+    {
+        while (this->m_length > 1)
+        {
+            remove(1);
+        }
+
+        if (this->m_length == 1)
+        {
+            Node * toDel = this->m_header.next;
+
+            this->m_header.next = nullptr;
+            this->m_length = 0;
+            this->m_current = nullptr;
+
+            this->destory(toDel);
+        }
+    }
+
+    bool move(int i, int step)
+    {
+        return LinkList<T>::move(mod(i), step);
+    }
+
+    bool end()
+    {
+        return ((this->m_current == nullptr) || (this->m_length == 0));
+    }
+
+    ~CircleLinkList()
+    {
+        clear();
+    }
 
 };
 
