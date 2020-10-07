@@ -11,6 +11,13 @@
 #include <iostream>
 #include "List/CircleLinkList.h"
 #include "List/DualLinkList.h"
+#include "List/LinuxList.h"
+
+struct Node
+{
+    struct list_head head;
+    int type;
+};
 
 using namespace std;
 using namespace DSLib;
@@ -38,44 +45,11 @@ void josephus(int n, int s, int m)
 
 int main(void)
 {
-    //josephus(41, 1, 3);
-    DualLinkList<int> dl;
+    struct Node l = {0};
 
-    for (int i = 0; i < 5; i++)
-    {
-        dl.insert(0, i);
-        dl.insert(0, 4);
-    }
+    struct list_head * list = (struct list_head *)&l;
 
-    for (dl.move(0); !dl.end(); dl.next())
-    {
-        cout << dl.current() << endl;
-    }
-
-    cout << "begin" << endl;
-
-    dl.move(dl.length() - 1);
-
-    while (!dl.end())
-    {
-        if (dl.current() == 4)
-        {
-            cout << dl.current() << endl;
-
-            dl.remove(dl.find(dl.current()));
-        }
-        else
-        {
-            dl.pre();
-        }
-    }
-
-    cout << "end" << endl;
-
-    for (dl.move(0); !dl.end(); dl.next())
-    {
-        cout << dl.current() << endl;
-    }
+    INIT_LIST_HEAD(list);
 
     return 0;
  }
