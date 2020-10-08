@@ -6,7 +6,15 @@
 //#include <linux/poison.h>
 //#include <linux/prefetch.h>
 
-//#include <iostream>
+
+
+#pragma once
+
+#ifdef __cplusplus
+    extern "C" {
+#endif
+
+#include <stdio.h>
 
 #ifndef offsetof
 #define offsetof(TYPE, MEMBER) ( (size_t) &((TYPE *)0)->MEMBER )
@@ -748,5 +756,9 @@ static void hlist_move_list(struct hlist_head *old,
          pos && ({ n = pos->next; 1; }) && 				 \
         ({ tpos = hlist_entry(pos, typeof(*tpos), member); 1;}); \
          pos = n)
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
