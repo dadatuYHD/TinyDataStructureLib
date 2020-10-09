@@ -11,7 +11,7 @@
 
 int main(void)
 {
-    DualCircleLinkList_Demo();
+    StaticStack_Demo();
 
     return 0;
 }

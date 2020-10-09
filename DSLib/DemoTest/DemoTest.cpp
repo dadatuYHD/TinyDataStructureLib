@@ -129,4 +129,21 @@ void DualCircleLinkList_Demo(void)
     }
 }
 
+void StaticStack_Demo(void)
+{
+    StaticStack<int, 5> ss;
+
+    for (int i = 0; i < 5; i++)
+    {
+        ss.push(i);
+        cout << ss.top() << endl;
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        cout << ss.top() << endl;
+        ss.pop();
+    }
+}
+
 }
