@@ -8,10 +8,13 @@
 *
 ********************************************************/
 #include "DemoTest/DemoTest.h"
+#include "Algorithm/SymbolPairDetection.h"
+
 
 int main(void)
 {
-    StaticStack_Demo();
+
+    cout << scan("(\'") << endl;
 
     return 0;
 }
