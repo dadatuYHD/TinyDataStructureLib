@@ -13,7 +13,7 @@
 
 int main(void)
 {
-    LinkQueue_Demo();
+    Stack_Demo();
 
     return 0;
 }

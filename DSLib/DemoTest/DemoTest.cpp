@@ -129,54 +129,37 @@ void DualCircleLinkList_Demo(void)
     }
 }
 
-void StaticStack_Demo(void)
+void Stack_Demo(void)
 {
-    StaticStack<int, 5> ss;
-
-    for (int i = 0; i < 5; i++)
-    {
-        ss.push(i);
-        cout << ss.top() << endl;
-    }
-
-    for (int i = 0; i < 5; i++)
-    {
-        cout << ss.top() << endl;
-        ss.pop();
-    }
-}
-
-void StaticQueue_Demo(void)
-{
-    StaticQueue<int , 5> sq;
-
-    for (int i = 0; i < 5; i++)
-    {
-        sq.add(i);
-    }
-
-    while (sq.length() > 0)
-    {
-        cout << sq.front() << endl;
-
-        sq.remove();
-    }
-}
-
-void LinkQueue_Demo(void)
-{
-    LinkQueue<int> lq;
+    QueueToStack<int> qts;
 
     for (int i = 0; i < 10; i++)
     {
-        lq.add(i);
+        qts.push(i);
+        cout << qts.top() << endl;
     }
 
-    while (lq.length() > 0)
+    for (int i = 0; i < 10; i++)
     {
-        cout << lq.front() << endl;
+        cout << qts.top() << endl;
+        qts.pop();
+    }
+}
 
-        lq.remove();
+void Queue_Demo(void)
+{
+    StackToQueue<int> stq;
+
+    for (int i = 0; i < 10; i++)
+    {
+        stq.add(i);
+    }
+
+    while (stq.length() > 0)
+    {
+        cout << stq.front() << endl;
+
+        stq.remove();
     }
 }
 
