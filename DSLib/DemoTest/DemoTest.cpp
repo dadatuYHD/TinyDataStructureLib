@@ -146,4 +146,38 @@ void StaticStack_Demo(void)
     }
 }
 
+void StaticQueue_Demo(void)
+{
+    StaticQueue<int , 5> sq;
+
+    for (int i = 0; i < 5; i++)
+    {
+        sq.add(i);
+    }
+
+    while (sq.length() > 0)
+    {
+        cout << sq.front() << endl;
+
+        sq.remove();
+    }
+}
+
+void LinkQueue_Demo(void)
+{
+    LinkQueue<int> lq;
+
+    for (int i = 0; i < 10; i++)
+    {
+        lq.add(i);
+    }
+
+    while (lq.length() > 0)
+    {
+        cout << lq.front() << endl;
+
+        lq.remove();
+    }
+}
+
 }

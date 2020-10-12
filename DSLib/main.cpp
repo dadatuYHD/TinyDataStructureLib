@@ -3,7 +3,7 @@
 *
 *   Filename:main.c
 *   Author  :yhd
-*   Date    :2020-09-16
+*   Date    :2020-10-11
 *   Describe:
 *
 ********************************************************/
@@ -13,8 +13,7 @@
 
 int main(void)
 {
-
-    cout << scan("(\'") << endl;
+    LinkQueue_Demo();
 
     return 0;
 }
