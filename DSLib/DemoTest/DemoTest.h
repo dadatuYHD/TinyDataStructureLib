@@ -11,6 +11,7 @@
 #include "Queue/StaticQueue.h"
 #include "Queue/LinkQueue.h"
 #include "Queue/StackToQueue.h"
+#include "DString/DString.h"
 
 namespace DSLib {
 
@@ -20,6 +21,7 @@ void linux_list_demo2(void);
 void DualCircleLinkList_Demo(void);
 void Stack_Demo(void);
 void Queue_Demo(void);
+void DString_Demo(void);
 
 }
 

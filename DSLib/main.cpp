@@ -10,10 +10,9 @@
 #include "DemoTest/DemoTest.h"
 #include "Algorithm/SymbolPairDetection.h"
 
-
-int main(void)
+int main()
 {
-    Stack_Demo();
+    DString_Demo();
 
     return 0;
 }

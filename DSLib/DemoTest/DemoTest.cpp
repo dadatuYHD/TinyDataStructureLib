@@ -163,4 +163,11 @@ void Queue_Demo(void)
     }
 }
 
+void DString_Demo(void)
+{
+    const DString s = "yhd is a good boy!";
+
+    cout << s[1] << endl;
+}
+
 }
