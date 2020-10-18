@@ -12,6 +12,7 @@ protected:
     char * m_str;
     int m_length;
     void init(const char * s);
+    bool equal(const char * l, const char * r, int len) const;
 public:
     DString();
     DString(const char * s);
@@ -45,10 +46,16 @@ public:
     DString& operator = (const char * s);
     DString& operator = (const char c);
 
-    bool StartWith(const char * s) const;
+
+    bool StartWith(const char * s) const;    //Judge whether the string starts with s
     bool StartWith(const DString s) const;
-    bool EndOf(const char * s) const;
+    bool EndOf(const char * s) const;        //Judge whether the string ends with s
     bool EndOf(const DString s) const;
+
+    DString& insert(int i, const char * s);
+    DString& insert(int i, const DString& s);
+
+    DString& trim(void);                     //Remove the space characters at both ends of the string
 
     ~DString();
 };
