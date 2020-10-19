@@ -1,7 +1,6 @@
 #ifndef DEMOTEST_H
 #define DEMOTEST_H
 
-#include <iostream>
 #include "List/CircleLinkList.h"
 #include "List/DualLinkList.h"
 #include "List/LinuxList.h"
@@ -25,7 +24,5 @@ void DString_Demo(void);
 
 }
 
-using namespace std;
-using namespace DSLib;
 
 #endif // DEMOTEST_H

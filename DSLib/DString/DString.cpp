@@ -325,4 +325,105 @@ DString& DString::trim(void)
     return *this;
 }
 
+int * DString::MakePmt(const char * src)
+{
+    int len = strlen(src);
+
+    int * pmt = static_cast<int *>(malloc(sizeof(int) * len));
+
+    if (pmt)
+    {
+        int ll = 0;
+
+        pmt[0] = 0;
+
+        for (int i = 1; i < len; i++)
+        {
+            while ((src[i] != src[ll]) && ll > 0)
+            {
+                ll = pmt[ll - 1];
+            }
+
+            if (src[i] == src[ll])
+            {
+                ll++;
+            }
+
+            pmt[i] = ll;
+        }
+    }
+
+    return pmt;
+}
+
+int DString::kmp(const char * ds, const char * src)
+{
+    int ret = -1;
+    int dsLen = strlen(ds);
+    int srcLen = strlen(src);
+    int * pmt = MakePmt(src);
+
+    for (int i = 0, j = 0; i < dsLen; i++)
+    {
+        while ((j > 0) && (ds[i] != src[j]))
+        {
+            j = pmt[j - 1];
+        }
+
+        if (ds[i] == src[j])
+        {
+            j++;
+        }
+
+        if (j == srcLen)
+        {
+            ret = i + 1 - srcLen;
+            break;
+        }
+    }
+
+    free(pmt);
+
+    return ret;
+}
+
+int DString::indexOf(const char * s) const
+{
+    return kmp(m_str, (s ? s : ""));
+}
+
+int DString::indexOf(const DString& s) const
+{
+    return kmp(m_str, s.m_str);
+}
+
+DString& DString::remove(int i, int len)
+{
+    if ((0 <= i) && (i < m_length))
+    {
+        int n = i;
+        int m = i + len;
+
+        while ((n < m) && (m < m_length))
+        {
+            m_str[n++] = m_str[m++];
+        }
+
+        m_str[n] = '\0';
+        m_length = n;
+    }
+
+    return *this;
+}
+
+DString& DString::remove(const char *s)
+{
+    return remove(indexOf(s), s ? strlen(s) : 0);
+}
+
+DString& DString::remove(const DString& s)
+{
+    return remove(indexOf(s), s.length());
+}
+
 }

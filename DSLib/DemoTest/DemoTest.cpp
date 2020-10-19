@@ -1,4 +1,7 @@
 #include "DemoTest.h"
+#include <iostream>
+
+using namespace std;
 
 namespace DSLib {
 
@@ -165,12 +168,10 @@ void Queue_Demo(void)
 
 void DString_Demo(void)
 {
-    DString s = "        yhd is a good boy!        ";
+    DString s = "test yhd!";
+    DString s1 = "test ";
 
-    if (s.trim().insert(0, "good ").EndOf("boy!") && s.StartWith("good"))
-    {
-        cout << "[" << s.str() << "]" << endl;
-    }
+    cout << s.remove(s1).str() << endl;
 }
 
 }

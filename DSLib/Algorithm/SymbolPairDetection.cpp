@@ -1,4 +1,5 @@
 #include "SymbolPairDetection.h"
+#include "Stack/LinkStack.h"
 
 namespace DSLib {
 

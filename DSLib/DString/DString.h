@@ -57,6 +57,17 @@ public:
 
     DString& trim(void);                     //Remove the space characters at both ends of the string
 
+    //KMP
+    static int kmp(const char * ds, const char * src);
+    static int * MakePmt(const char * src);
+    int indexOf(const char * s) const;
+    int indexOf(const DString& s) const;\
+
+    //Delete the specified substring in the string
+    DString& remove(int i, int len);
+    DString& remove(const char *s);
+    DString& remove(const DString& s);
+
     ~DString();
 };
 
