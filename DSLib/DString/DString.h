@@ -42,6 +42,11 @@ public:
     DString& operator += (const DString& s);
     DString& operator += (const char * s);
 
+    DString operator  - (const DString& s) const;
+    DString operator  - (const char * s) const;
+    DString& operator -= (const DString& s);
+    DString& operator -= (const char * s);
+
     DString& operator = (const DString& s);
     DString& operator = (const char * s);
     DString& operator = (const char c);
@@ -65,8 +70,17 @@ public:
 
     //Delete the specified substring in the string
     DString& remove(int i, int len);
-    DString& remove(const char *s);
+    DString& remove(const char * s);
     DString& remove(const DString& s);
+
+    DString& replace(const char * dest, const char * src);
+    DString& replace(const DString& dest, const char * src);
+    DString& replace(const char * dest, const DString& src);
+    DString& replace(const DString& dest, const DString& src);
+
+    //create ths specified substring from ths string
+    DString SubString(int i, int len) const;
+
 
     ~DString();
 };

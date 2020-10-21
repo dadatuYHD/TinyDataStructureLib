@@ -8,7 +8,6 @@
 *
 ********************************************************/
 #include "DemoTest/DemoTest.h"
-#include "Algorithm/SymbolPairDetection.h"
 #include <iostream>
 
 using namespace std;
@@ -16,8 +15,7 @@ using namespace DSLib;
 
 int main()
 {
-
-    DString_Demo();
+    linklist_demo();
 
     return 0;
 }

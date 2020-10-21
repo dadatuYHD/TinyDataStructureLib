@@ -173,6 +173,12 @@ public:
     {
         return m_length;
     }
+
+    int * GetLength(void)
+    {
+        return &m_length;
+    }
+
     void clear()
     {
         while (m_header.next)
@@ -227,6 +233,11 @@ public:
          }
 
          return (i == m_step);
+    }
+
+    Node * GetHeaderNode()
+    {
+        return reinterpret_cast<Node *>(&m_header);
     }
 
     ~LinkList()

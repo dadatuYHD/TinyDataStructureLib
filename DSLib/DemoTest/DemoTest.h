@@ -11,6 +11,7 @@
 #include "Queue/LinkQueue.h"
 #include "Queue/StackToQueue.h"
 #include "DString/DString.h"
+#include "Algorithm/LinkListAlgorithm.h"
 
 namespace DSLib {
 
@@ -21,6 +22,7 @@ void DualCircleLinkList_Demo(void);
 void Stack_Demo(void);
 void Queue_Demo(void);
 void DString_Demo(void);
+void linklist_demo(void);
 
 }
 

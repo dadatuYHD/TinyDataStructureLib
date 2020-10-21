@@ -169,9 +169,84 @@ void Queue_Demo(void)
 void DString_Demo(void)
 {
     DString s = "test yhd!";
-    DString s1 = "test ";
 
-    cout << s.remove(s1).str() << endl;
+    s.SubString(3,20);
+
+    cout << s.SubString(3,20).str() << endl;
+}
+
+void linklist_reverse(void)
+{
+    LinkList<int> list;
+    LinkListAlgorithm<int> listAlgorithm;
+
+    for (int i = 0; i < 10; i++)
+    {
+        list.insert(i);
+    }
+
+    for (int i = 0; i < list.length(); i++)
+    {
+        cout << list.get(i) << "->";
+    }
+    cout << "nullptr" << endl;
+
+    cout << "reverse the linklist" << endl;
+
+    (list.GetHeaderNode())->next = listAlgorithm.reverse((list.GetHeaderNode())->next);
+
+    for (int i = 0; i < list.length(); i++)
+    {
+        cout << list.get(i) << "->";
+    }
+    cout << "nullptr" << endl;
+}
+
+void linklist_merge(void)
+{
+    LinkList<int> list;
+    LinkList<int> list1;
+    LinkList<int> list2;
+    LinkListAlgorithm<int> listAlgorithm;
+
+    for (int i = 0; i <= 10; i++, i++)
+    {
+        list1.insert(i);
+    }
+
+    for (int i = 0; i < list1.length(); i++)
+    {
+        cout << list1.get(i) << "->";
+    }
+    cout << "nullptr" << endl;
+
+    for (int i = 1; i <= 11; i++, i++)
+    {
+        list2.insert(i);
+    }
+
+    for (int i = 0; i < list2.length(); i++)
+    {
+        cout << list2.get(i) << "->";
+    }
+    cout << "nullptr" << endl;
+
+    cout << "merge list1 and list2" << endl;
+
+    list.GetHeaderNode()->next =  listAlgorithm.merge(list1.GetHeaderNode()->next, list2.GetHeaderNode()->next);
+    *(list.GetLength()) = list1.length() + list2.length();
+
+    for (int i = 0; i < list.length(); i++)
+    {
+        cout << list.get(i) << "->";
+    }
+
+    cout << "nullptr" << endl;
+}
+
+void linklist_demo(void)
+{
+    linklist_merge();
 }
 
 }

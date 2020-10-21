@@ -158,6 +158,26 @@ DString& DString::operator += (const char * s)
     return (*this = *this + s);
 }
 
+DString DString::operator  - (const DString& s) const
+{
+    return DString(*this).remove(s);
+}
+
+DString  DString::operator  - (const char * s) const
+{
+    return DString(*this).remove(s);
+}
+
+DString& DString::operator -= (const DString& s)
+{
+    return remove(s);
+}
+
+DString& DString::operator -= (const char * s)
+{
+    return remove(s);
+}
+
 DString& DString::operator = (const DString& s)
 {
     return (*this = s.m_str);
@@ -424,6 +444,57 @@ DString& DString::remove(const char *s)
 DString& DString::remove(const DString& s)
 {
     return remove(indexOf(s), s.length());
+}
+
+DString& DString::replace(const char * dest, const char * src)
+{
+    int index = indexOf(dest);
+
+    if (index >= 0)
+    {
+        remove(dest);
+        insert(index, src);
+    }
+
+    return *this;
+}
+
+DString& DString::replace(const DString& dest, const char * src)
+{
+    return replace(dest.m_str, src);
+}
+
+DString& DString::replace(const char * dest, const DString& src)
+{
+    return replace(dest, src.m_str);
+}
+
+DString& DString::replace(const DString& dest, const DString& src)
+{
+    return replace(dest.m_str, src.m_str);
+}
+
+DString DString::SubString(int i, int len) const
+{
+    DString ret;
+
+    if ((0 <= i) && (i <= m_length))
+    {
+        if (len < 0) len = 0;
+        if (len + i > m_length) len = m_length - i;
+
+        char * str = reinterpret_cast<char *>(malloc(len + 1));
+
+        strncpy(str, m_str + i, len);
+
+        ret = str;
+
+        return ret;
+    }
+    else
+    {
+        THROW_EXCEPTION(IndexOutOfBoundsException, "Parameter i is invalid ...");
+    }
 }
 
 }
