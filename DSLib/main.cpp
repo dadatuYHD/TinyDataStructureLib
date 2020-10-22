@@ -15,7 +15,7 @@ using namespace DSLib;
 
 int main()
 {
-    linklist_demo();
+    QueueSolution_demo();
 
     return 0;
 }

@@ -244,9 +244,48 @@ void linklist_merge(void)
     cout << "nullptr" << endl;
 }
 
+void linklist_reverse_print(void)
+{
+    LinkList<int> list1;
+    LinkListAlgorithm<int> listAlgorithm;
+
+    for (int i = 0; i < 10; i++ )
+    {
+        list1.insert(i);
+    }
+
+    for (int i = 0; i < list1.length(); i++)
+    {
+        cout << list1.get(i) << endl;;
+    }
+
+    cout << "reverse print the list1" << endl;
+
+    listAlgorithm.ReversePrint(list1.GetHeaderNode()->next);
+}
+
 void linklist_demo(void)
 {
-    linklist_merge();
+    linklist_reverse_print();
+}
+
+void HanoiTower_demo(void)
+{
+    HanoiTower(3, 'a', 'b', 'c');
+}
+
+void permutation_demo(void)
+{
+    char s[] = "aaa";
+
+    permutation(s, s);
+}
+
+void QueueSolution_demo(void)
+{
+    QueueSolution<8> queue;
+
+    queue.ChessStart();
 }
 
 }

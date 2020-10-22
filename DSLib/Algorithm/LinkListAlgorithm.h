@@ -2,6 +2,9 @@
 #define LINKLISTALGORITHM_H
 
 #include "List/LinkList.h"
+#include <iostream>
+
+using namespace std;
 
 namespace DSLib
 {
@@ -12,11 +15,16 @@ class LinkListAlgorithm : public LinkList<T>
 protected:
     typedef typename LinkList<T>::Node Node;
 public:
-    /*
-     *linklist some operation
-    */
+    /************************************************************
+     ****************linklist about operation*********************
+     ***********************************************************/
 
-    //Recursion递归
+    /************************************************************
+     * FUNCTION:reverse()
+     * Description:By recursive algorithm to reverse the single linklist
+     * Arguments[list][In]:the address of the first node
+     * return:the address of the first node
+     * *********************************************************/
     Node * reverse(Node * list)
     {
         if ((list == nullptr) || (list->next == nullptr))
@@ -34,6 +42,12 @@ public:
         }
     }
 
+    /************************************************************
+     * FUNCTION:merge()
+     * Description:By recursive algorithm to merge two singly linklist in ascending order
+     * Arguments[list1 list2][In]:the address of the first node
+     * return:the address of the first node
+     * *********************************************************/
     Node * merge(Node * list1, Node * list2)
     {
         if ((list1 == nullptr))
@@ -53,6 +67,24 @@ public:
             return (list2->next = merge(list2->next, list1), list2);
         }
     }
+
+    /************************************************************
+     * FUNCTION:ReversePrint()
+     * Description:By Recursive algorithm to reverse print the
+     * node of  single link list
+     * Arguments[list][In]:the address of the first node
+     * return:void
+     * *********************************************************/
+    void ReversePrint(Node * list)
+    {
+        if (list != nullptr)
+        {
+            ReversePrint(list->next);
+
+            cout << list->value << endl;
+        }
+    }
+
 };
 
 }

@@ -12,6 +12,8 @@
 #include "Queue/StackToQueue.h"
 #include "DString/DString.h"
 #include "Algorithm/LinkListAlgorithm.h"
+#include "Algorithm/Recursion.h"
+#include "Algorithm/QueueSolution.h"
 
 namespace DSLib {
 
@@ -23,7 +25,9 @@ void Stack_Demo(void);
 void Queue_Demo(void);
 void DString_Demo(void);
 void linklist_demo(void);
-
+void HanoiTower_demo(void);
+void permutation_demo(void);
+void QueueSolution_demo(void);
 }
 
 
