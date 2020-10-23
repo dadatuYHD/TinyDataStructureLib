@@ -12,8 +12,11 @@ namespace DSLib
 template <typename T>
 class LinkListAlgorithm : public LinkList<T>
 {
-protected:
+private:
     typedef typename LinkList<T>::Node Node;
+    LinkListAlgorithm();
+    LinkListAlgorithm(const LinkListAlgorithm&);
+    LinkListAlgorithm& operator = (const LinkListAlgorithm&);
 public:
     /************************************************************
      ****************linklist about operation*********************
@@ -25,7 +28,7 @@ public:
      * Arguments[list][In]:the address of the first node
      * return:the address of the first node
      * *********************************************************/
-    Node * reverse(Node * list)
+    static Node * reverse(Node * list)
     {
         if ((list == nullptr) || (list->next == nullptr))
         {
@@ -48,7 +51,7 @@ public:
      * Arguments[list1 list2][In]:the address of the first node
      * return:the address of the first node
      * *********************************************************/
-    Node * merge(Node * list1, Node * list2)
+    static Node * merge(Node * list1, Node * list2)
     {
         if ((list1 == nullptr))
         {
@@ -75,7 +78,7 @@ public:
      * Arguments[list][In]:the address of the first node
      * return:void
      * *********************************************************/
-    void ReversePrint(Node * list)
+    static void ReversePrint(Node * list)
     {
         if (list != nullptr)
         {

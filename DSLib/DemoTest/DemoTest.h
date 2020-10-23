@@ -14,6 +14,7 @@
 #include "Algorithm/LinkListAlgorithm.h"
 #include "Algorithm/Recursion.h"
 #include "Algorithm/QueueSolution.h"
+#include "Algorithm/Sort.h"
 
 namespace DSLib {
 
@@ -28,6 +29,8 @@ void linklist_demo(void);
 void HanoiTower_demo(void);
 void permutation_demo(void);
 void QueueSolution_demo(void);
+void Sort_demo(void);
+
 }
 
 

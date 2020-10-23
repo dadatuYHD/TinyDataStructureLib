@@ -10,6 +10,8 @@ using namespace std;
 
 namespace DSLib {
 
+
+//Eight Queens problem solution by Backtracking
 #define CHESSBOARD_FREE_SPACE 0
 #define QUEUE                 1
 #define CHESSBOARD_BOUNDARY   2
@@ -27,10 +29,10 @@ protected:
         int y;
     };
 
-    int m_chessboard[N][N];
-    Pos m_direction[3];
-    LinkList<Pos> m_solution;
-    int m_count;
+    int m_chessboard[N][N];    //Define the chessboard
+    Pos m_direction[3];        //Direction array. Used to determine whether there is a queen in the direction
+    LinkList<Pos> m_solution;  //Storage solution
+    int m_count;               //The number of solution
 
     void init(void)
     {

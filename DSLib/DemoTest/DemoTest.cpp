@@ -178,7 +178,6 @@ void DString_Demo(void)
 void linklist_reverse(void)
 {
     LinkList<int> list;
-    LinkListAlgorithm<int> listAlgorithm;
 
     for (int i = 0; i < 10; i++)
     {
@@ -193,7 +192,7 @@ void linklist_reverse(void)
 
     cout << "reverse the linklist" << endl;
 
-    (list.GetHeaderNode())->next = listAlgorithm.reverse((list.GetHeaderNode())->next);
+    (list.GetHeaderNode())->next = LinkListAlgorithm<int>::reverse((list.GetHeaderNode())->next);
 
     for (int i = 0; i < list.length(); i++)
     {
@@ -207,7 +206,6 @@ void linklist_merge(void)
     LinkList<int> list;
     LinkList<int> list1;
     LinkList<int> list2;
-    LinkListAlgorithm<int> listAlgorithm;
 
     for (int i = 0; i <= 10; i++, i++)
     {
@@ -233,7 +231,7 @@ void linklist_merge(void)
 
     cout << "merge list1 and list2" << endl;
 
-    list.GetHeaderNode()->next =  listAlgorithm.merge(list1.GetHeaderNode()->next, list2.GetHeaderNode()->next);
+    list.GetHeaderNode()->next =  LinkListAlgorithm<int>::merge(list1.GetHeaderNode()->next, list2.GetHeaderNode()->next);
     *(list.GetLength()) = list1.length() + list2.length();
 
     for (int i = 0; i < list.length(); i++)
@@ -247,7 +245,6 @@ void linklist_merge(void)
 void linklist_reverse_print(void)
 {
     LinkList<int> list1;
-    LinkListAlgorithm<int> listAlgorithm;
 
     for (int i = 0; i < 10; i++ )
     {
@@ -261,7 +258,7 @@ void linklist_reverse_print(void)
 
     cout << "reverse print the list1" << endl;
 
-    listAlgorithm.ReversePrint(list1.GetHeaderNode()->next);
+    LinkListAlgorithm<int>::ReversePrint(list1.GetHeaderNode()->next);
 }
 
 void linklist_demo(void)
@@ -286,6 +283,53 @@ void QueueSolution_demo(void)
     QueueSolution<8> queue;
 
     queue.ChessStart();
+}
+
+void Sort_select(void)
+{
+    int a[] = {5,6,9,1,3,7};
+
+    Sort::select(a, 6, ASCENDING);
+
+    for (int i = 0; i < 6; i++)
+    {
+        cout << a[i] << " ";
+    }
+
+    cout << endl;
+}
+
+void Sort_insert(void)
+{
+    int a[] = {5,6,9,1,3,7};
+
+    Sort::insert(a, 6, DESCENDING);
+
+    for (int i = 0; i < 6; i++)
+    {
+        cout << a[i] << " ";
+    }
+
+    cout << endl;
+}
+
+void Sort_bubble(void)
+{
+    int a[] = {5,6,9,1,3,7};
+
+    Sort::shell(a, 6, DESCENDING);
+
+    for (int i = 0; i < 6; i++)
+    {
+        cout << a[i] << " ";
+    }
+
+    cout << endl;
+}
+
+void Sort_demo(void)
+{
+    Sort_bubble();
 }
 
 }

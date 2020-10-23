@@ -3,7 +3,7 @@
 *
 *   Filename:main.c
 *   Author  :yhd
-*   Date    :2020-10-11
+*   Date    :2020-10-23
 *   Describe:
 *
 ********************************************************/
@@ -15,7 +15,7 @@ using namespace DSLib;
 
 int main()
 {
-    QueueSolution_demo();
+    Sort_demo();
 
     return 0;
 }
