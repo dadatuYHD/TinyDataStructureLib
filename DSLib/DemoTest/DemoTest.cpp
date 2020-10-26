@@ -1,5 +1,6 @@
 #include "DemoTest.h"
 #include <iostream>
+#include <ctime>
 
 using namespace std;
 
@@ -313,15 +314,150 @@ void Sort_insert(void)
     cout << endl;
 }
 
+class Test : public Object
+{
+public:
+    int id;
+    int data1[1000];
+    double data2[500];
+
+    bool operator > (const Test& obj)
+    {
+        return (id > obj.id);
+    }
+    bool operator < (const Test& obj)
+    {
+        return (id < obj.id);
+    }
+    bool operator >= (const Test& obj)
+    {
+        return (id >= obj.id);
+    }
+    bool operator <= (const Test& obj)
+    {
+        return (id <= obj.id);
+    }
+
+};
+
+class TestpProxy : public Object
+{
+protected:
+    Test * m_pTest;
+public:
+    int id()
+    {
+        return m_pTest->id;
+    }
+
+    int * data1()
+    {
+        return m_pTest->data1;
+    }
+
+    double * data2()
+    {
+        return m_pTest->data2;
+    }
+
+    Test& test() const
+    {
+        return *m_pTest;
+    }
+
+    bool operator > (const TestpProxy& obj)
+    {
+        return test() > obj.test();
+    }
+    bool operator < (const TestpProxy& obj)
+    {
+        return test() < obj.test();
+    }
+    bool operator >= (const TestpProxy& obj)
+    {
+        return test() >= obj.test();
+    }
+    bool operator <= (const TestpProxy& obj)
+    {
+        return test() <= obj.test();
+    }
+
+    Test& operator = (Test& t)
+    {
+        m_pTest = &t;
+
+        return t;
+    }
+
+};
+
+Test t[1000];
+TestpProxy pt[1000];
+
+void Sort_bubbleProxy(void)
+{
+    clock_t begin = 0;
+    clock_t end = 0;
+
+    for (int i = 0; i < 1000; i++)
+    {
+        t[i].id = i;
+        pt[i] = t[i];
+    }
+
+    begin = clock();
+
+    Sort::bubble(pt, 1000, DESCENDING);
+
+    end = clock();
+
+    cout << "Time: " << (end - begin) << endl;
+}
+
 void Sort_bubble(void)
+{
+//    int a[] = {5,6,9,1,3,7};
+
+//    Sort::shell(a, 6, DESCENDING);
+
+//    for (int i = 0; i < 6; i++)
+//    {
+//        cout << a[i] << " ";
+//    }
+
+//    cout << endl;
+
+    Sort_bubbleProxy();
+}
+
+void Sort_merge(void)
 {
     int a[] = {5,6,9,1,3,7};
 
-    Sort::shell(a, 6, DESCENDING);
+    Sort::merge(a, 6, DESCENDING);
 
     for (int i = 0; i < 6; i++)
     {
         cout << a[i] << " ";
+    }
+
+    cout << endl;
+}
+
+void Sort_quick(void)
+{
+    StaticAarray<int, 5> sa;
+
+    for (int i = 0; i < 5; i++)
+    {
+        sa[i] = i ;
+    }
+
+    Sort::quick(sa.GetArray(), sa.length(), DESCENDING);
+
+    for (int i = 0; i < sa.length(); i++)
+    {
+        cout << sa[i] << " ";
     }
 
     cout << endl;

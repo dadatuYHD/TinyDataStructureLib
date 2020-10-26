@@ -53,6 +53,11 @@ public:
         return const_cast<Array<T>&>((*this)[i]);
     }
 
+    T * GetArray(void)
+    {
+        return m_array;
+    }
+
     virtual int length() const = 0;
 };
 

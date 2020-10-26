@@ -15,6 +15,8 @@
 #include "Algorithm/Recursion.h"
 #include "Algorithm/QueueSolution.h"
 #include "Algorithm/Sort.h"
+#include "Array/DynamicArray.h"
+#include "Array/StaticArray.h"
 
 namespace DSLib {
 
