@@ -18,7 +18,7 @@ using namespace DSLib;
 
 int main()
 {
-    Sort_demo();
+    tree_demo();
 
     return 0;
 }

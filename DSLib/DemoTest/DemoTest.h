@@ -17,6 +17,7 @@
 #include "Algorithm/Sort.h"
 #include "Array/DynamicArray.h"
 #include "Array/StaticArray.h"
+#include "Tree/GTree.h"
 
 namespace DSLib {
 
@@ -32,6 +33,7 @@ void HanoiTower_demo(void);
 void permutation_demo(void);
 void QueueSolution_demo(void);
 void Sort_demo(void);
+void tree_demo(void);
 
 }
 

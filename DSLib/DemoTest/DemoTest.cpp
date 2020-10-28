@@ -468,4 +468,50 @@ void Sort_demo(void)
     Sort_bubble();
 }
 
+void tree_demo(void)
+{
+    GTree<char> gtree;
+    GTreeNode<char> * pGTreeNode = nullptr;
+    GTreeNode<char> root;
+
+    root.value = 'A';
+    root.parent = nullptr;
+    gtree.insert(&root);
+
+    gtree.insert('B', gtree.find('A'));
+    gtree.insert('C', gtree.find('A'));
+    gtree.insert('D', gtree.find('A'));
+
+    gtree.insert('E', gtree.find('B'));
+    gtree.insert('F', gtree.find('B'));
+
+    gtree.insert('K', gtree.find('E'));
+    gtree.insert('L', gtree.find('E'));
+
+    gtree.insert('G', gtree.find('C'));
+
+    gtree.insert('H', gtree.find('D'));
+    gtree.insert('I', gtree.find('D'));
+    gtree.insert('J', gtree.find('D'));
+
+    gtree.insert('M', gtree.find('H'));
+
+    gtree.clear();
+
+    DString s = "KLFGMIJ";
+
+    for (int i = 0; i < 7; i++)
+    {
+        pGTreeNode = gtree.find(s[i]);
+
+        while (pGTreeNode != nullptr)
+        {
+            cout << pGTreeNode->value << "-->";
+            pGTreeNode = dynamic_cast<GTreeNode<char> *>(pGTreeNode->parent);
+        }
+
+        cout << endl;
+    }
+}
+
 }
