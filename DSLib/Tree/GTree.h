@@ -1,10 +1,11 @@
 #ifndef GTREE_H
 #define GTREE_H
 
+#include <iostream>
 #include "Tree.h"
 #include "GTreeNode.h"
 #include "Exception/Exception.h"
-#include <iostream>
+#include "Queue/LinkQueue.h"
 
 namespace DSLib {
 
@@ -12,6 +13,11 @@ template <typename T>
 class GTree : public Tree<T>
 {
 protected:
+    LinkQueue< GTreeNode<T> *> m_queue;
+
+    GTree(const GTree<T>&);
+    GTree<T>& operator = (const GTree<T>&);
+
     GTreeNode<T> * find(GTreeNode<T> * node, const T& value) const
     {
         GTreeNode<T> * ret =nullptr;
@@ -76,7 +82,97 @@ protected:
         }
     }
 
+    void remove(GTreeNode<T> * node, GTree<T> *& ret)
+    {
+        ret = new GTree<T>();
+
+        if (ret == nullptr)
+        {
+            THROW_EXCEPTION(NoEnoughMemoryException, "No memory to create new tree ...");
+        }
+        else
+        {
+            if (root() == node)
+            {
+                this->m_root = nullptr;
+            }
+            else
+            {
+                LinkList<GTreeNode<T> *>& child = dynamic_cast<GTreeNode<T> *>(node->parent)->child;
+
+                child.remove(child.find(node));
+
+                node->parent = nullptr;
+            }
+
+            /*
+             *  Because all objects share member functions,
+             *  member functions can access member variables
+             *  of all objects
+             */
+            ret->m_root = node;
+        }
+    }
+
+    int count(GTreeNode<T> * node) const
+    {
+        int ret = 0;
+
+        if (node != nullptr)
+        {
+            ret = 1;
+
+            for (node->child.move(0); !node->child.end(); node->child.next())
+            {
+                ret += count(node->child.current());
+            }
+        }
+
+        return ret;
+    }
+
+    int height(GTreeNode<T> * node) const
+    {
+        int ret = 0;
+
+        if (node != nullptr)
+        {
+
+            for (node->child.move(0); !node->child.end(); node->child.next())
+            {
+                int high = height(node->child.current());
+
+                if (high > ret) ret = high;
+            }
+
+            ret += 1;
+        }
+
+        return ret;
+    }
+
+    int degree(GTreeNode<T> * node) const
+    {
+        int ret = 0;
+
+        if (node != nullptr)
+        {
+            ret = node->child.length();
+
+            for (node->child.move(0); !node->child.end(); node->child.next())
+            {
+                int deg = degree(node->child.current());
+
+                if (deg > ret) ret = deg;
+            }
+        }
+
+        return ret;
+    }
+
 public:
+    GTree() {};
+
     bool insert(TreeNode<T> * node)
     {
         bool ret = true;
@@ -136,16 +232,40 @@ public:
 
     SharedPointer< Tree<T> > remove(const T& value)
     {
-        SharedPointer< Tree<T> > s;
+        GTree<T> * ret = nullptr;
+        GTreeNode<T> * node = find(value);
 
-        return s;
+        if (node == nullptr)
+        {
+            THROW_EXCEPTION(InvalidParameterException, "Can not find the node via the parameter value ...");
+        }
+        else
+        {
+            remove(node, ret);
+
+            m_queue.clear();
+        }
+
+        return ret;
     }
 
     SharedPointer< Tree<T> > remove(TreeNode<T> * node)
     {
-        SharedPointer< Tree<T> > s;
+        GTree<T> * ret = nullptr;
+        node = find(node);
 
-        return s;
+        if (node == nullptr)
+        {
+            THROW_EXCEPTION(InvalidParameterException, "parameter node is invalid ...");
+        }
+        else
+        {
+            remove(dynamic_cast<GTreeNode<T> *>(node), ret);
+
+            m_queue.clear();
+        }
+
+        return ret;
     }
 
     GTreeNode<T> * find(const T& value) const
@@ -165,17 +285,17 @@ public:
 
     int degree() const
     {
-        return 1;
+        return degree(root());
     }
 
     int count() const
     {
-        return 1;
+        return count(root());
     }
 
     int height() const
     {
-        return 1;
+        return height(root());
     }
 
     void clear()
@@ -183,7 +303,61 @@ public:
         free(root());
 
         this->m_root = nullptr;
+
+        m_queue.clear();
     }
+
+    //traverse
+    bool begin()
+    {
+        bool ret = (root() != nullptr);
+
+        if (ret)
+        {
+            m_queue.clear();
+
+            m_queue.add(root());
+        }
+
+        return ret;
+    }
+
+    bool end()
+    {
+        return (m_queue.length() == 0);
+    }
+
+    bool next()
+    {
+        bool ret = (m_queue.length() > 0);
+
+        if (ret)
+        {
+            GTreeNode<T> * node = m_queue.front();
+
+            m_queue.remove();
+
+            for (node->child.move(0); !node->child.end(); node->child.next())
+            {
+                m_queue.add(node->child.current());
+            }
+        }
+
+        return ret;
+    }
+
+    T current()
+    {
+        if (!end())
+        {
+            return m_queue.front()->value;
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "No tree node at current position");
+        }
+    }
+
 
     ~GTree()
     {

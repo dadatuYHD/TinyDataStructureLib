@@ -471,7 +471,7 @@ void Sort_demo(void)
 void tree_demo(void)
 {
     GTree<char> gtree;
-    GTreeNode<char> * pGTreeNode = nullptr;
+    TreeNode<char> * pGTreeNode = nullptr;
     GTreeNode<char> root;
 
     root.value = 'A';
@@ -496,21 +496,26 @@ void tree_demo(void)
 
     gtree.insert('M', gtree.find('H'));
 
-    gtree.clear();
+//    SharedPointer< Tree<char> > spTree =  gtree.remove('D');
 
-    DString s = "KLFGMIJ";
+//    DString s = "KLFGMIJ";
 
-    for (int i = 0; i < 7; i++)
+//    for (int i = 0; i < 7; i++)
+//    {
+//        pGTreeNode = spTree->find(s[i]);
+
+//        while (pGTreeNode != nullptr)
+//        {
+//            cout << pGTreeNode->value << "-->";
+//            pGTreeNode = dynamic_cast<GTreeNode<char> *>(pGTreeNode->parent);
+//        }
+
+//        cout << endl;
+//    }
+
+    for (gtree.begin(); !gtree.end(); gtree.next())
     {
-        pGTreeNode = gtree.find(s[i]);
-
-        while (pGTreeNode != nullptr)
-        {
-            cout << pGTreeNode->value << "-->";
-            pGTreeNode = dynamic_cast<GTreeNode<char> *>(pGTreeNode->parent);
-        }
-
-        cout << endl;
+        cout << gtree.current() << endl;
     }
 }
 

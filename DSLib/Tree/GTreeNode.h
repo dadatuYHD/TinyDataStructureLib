@@ -17,6 +17,9 @@ protected:
         return Object::operator new(size);
     }
 
+    GTreeNode(const GTreeNode<T>&);
+    GTreeNode<T>& operator = (const GTreeNode<T>&);
+
 public:
     LinkList< GTreeNode<T> * > child;
 
