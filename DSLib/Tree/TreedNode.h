@@ -9,6 +9,17 @@ namespace DSLib
 template <typename T>
 class TreeNode : public Object
 {
+protected:
+    bool m_flag;
+
+    void * operator new (unsigned long long  size) throw()
+    {
+        return Object::operator new(size);
+    }
+
+    TreeNode(const TreeNode<T>&);
+    TreeNode<T>& operator = (const TreeNode<T>&);
+
 public:
     T value;
     TreeNode<T> * parent;
@@ -16,6 +27,12 @@ public:
     TreeNode()
     {
         parent = nullptr;
+        m_flag = false;
+    }
+
+    bool getFlag(void)
+    {
+        return m_flag;
     }
 
     virtual ~TreeNode() = 0;

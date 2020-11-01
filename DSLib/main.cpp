@@ -18,7 +18,7 @@ using namespace DSLib;
 
 int main()
 {
-    tree_demo();
+    btree_demo();
 
     return 0;
 }

@@ -468,7 +468,7 @@ void Sort_demo(void)
     Sort_bubble();
 }
 
-void tree_demo(void)
+void gtree_demo(void)
 {
     GTree<char> gtree;
     TreeNode<char> * pGTreeNode = nullptr;
@@ -517,6 +517,24 @@ void tree_demo(void)
     {
         cout << gtree.current() << endl;
     }
+}
+
+void btree_demo(void)
+{
+    BTree<int> bt;
+
+    bt.insert(1, nullptr);
+
+    bt.insert(2, bt.find(1));
+    bt.insert(3, bt.find(1));
+    bt.insert(4, bt.find(2));
+    bt.insert(5, bt.find(2));
+    bt.insert(8, bt.find(4));
+    bt.insert(9, bt.find(4));
+    bt.insert(10, bt.find(5));
+    bt.insert(6, bt.find(3));
+    bt.insert(7, bt.find(3));
+    bt.insert(11, bt.find(6));
 }
 
 }

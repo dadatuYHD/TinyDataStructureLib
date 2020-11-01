@@ -15,9 +15,6 @@ class GTree : public Tree<T>
 protected:
     LinkQueue< GTreeNode<T> *> m_queue;
 
-    GTree(const GTree<T>&);
-    GTree<T>& operator = (const GTree<T>&);
-
     GTreeNode<T> * find(GTreeNode<T> * node, const T& value) const
     {
         GTreeNode<T> * ret =nullptr;

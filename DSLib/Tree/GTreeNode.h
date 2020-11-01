@@ -9,29 +9,8 @@ namespace DSLib {
 template <typename T>
 class GTreeNode : public TreeNode<T>
 {
-protected:
-    bool m_flag;
-
-    void * operator new (unsigned long long  size) throw()
-    {
-        return Object::operator new(size);
-    }
-
-    GTreeNode(const GTreeNode<T>&);
-    GTreeNode<T>& operator = (const GTreeNode<T>&);
-
 public:
     LinkList< GTreeNode<T> * > child;
-
-    GTreeNode()
-    {
-        m_flag = false;
-    }
-
-    bool getFlag(void)
-    {
-        return m_flag;
-    }
 
     static GTreeNode<T> * NewNode(void)
     {
@@ -44,9 +23,6 @@ public:
 
         return ret;
     }
-
-
-
 };
 
 }
