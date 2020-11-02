@@ -20,6 +20,9 @@ template <typename T>
 class BTree : public Tree<T>
 {
 protected:
+
+    LinkQueue< BTreeNode<T> *> m_queue;
+
     virtual BTreeNode<T> * find(BTreeNode<T> * node, const T& value) const
     {
         BTreeNode<T> * ret = nullptr;
@@ -119,6 +122,8 @@ protected:
         {
             THROW_EXCEPTION(InvalidParameterException, "Parameter pos is invalid ...");
         }
+
+        return ret;
     }
 
     virtual void remove(BTreeNode<T> * node, BTree<T> *& ret)
@@ -172,13 +177,43 @@ protected:
             free(node->m_left);
             free(node->m_right);
 
-            cout << node->value << endl;
+            //cout << node->value << endl;
 
             if (node->getFlag())
             {
                 delete node;
             }
         }
+    }
+
+    int count(BTreeNode<T> * node) const
+    {
+        return ((node != nullptr) ? (count(node->m_left) + count(node->m_right) + 1) : 0);
+    }
+
+    int height(BTreeNode<T> * node) const
+    {
+        return ((node != nullptr) ? ((height(node->m_left) > height(node->m_right)) ? height(node->m_left) + 1 : height(node->m_right) + 1) : 0);
+    }
+
+    int degree(BTreeNode<T> * node) const
+    {
+        int ret = 0;
+
+        if (node)
+        {
+            BTreeNode<T> * child[] = {node->m_left, node->m_right};
+            ret = !!(node->m_left) + !!(node->m_right);
+
+            for (int i = 0; i < 2 && (ret < 2); i++)
+            {
+                int d = degree(child[i]);
+
+                if (ret < d) ret = d;
+            }
+        }
+
+        return ret;
     }
 
 public:
@@ -258,6 +293,7 @@ public:
         if (node)
         {
             remove(node, ret);
+            m_queue.clear();
         }
         else
         {
@@ -276,6 +312,8 @@ public:
         if (node)
         {
             remove(dynamic_cast<BTreeNode<T> *>(node), ret);
+
+            m_queue.clear();
         }
         else
         {
@@ -302,24 +340,75 @@ public:
 
     int degree() const
     {
-
+        return degree(root());
     }
 
     int count() const
     {
-
+        return count(root());
     }
 
     int height() const
     {
-
+        return height(root());
     }
 
     void clear()
     {
         free(root());
 
+        m_queue.clear();
+
         this->m_root = nullptr;
+    }
+
+    //level traverse the BTree
+    bool begin()
+    {
+        bool ret = (root() != nullptr);
+
+        if (ret)
+        {
+            m_queue.clear();
+
+            m_queue.add(root());
+        }
+
+        return ret;
+    }
+
+    bool end()
+    {
+        return (m_queue.length() == 0);
+    }
+
+    bool next()
+    {
+        bool ret = (m_queue.length() > 0);
+
+        if (ret)
+        {
+            BTreeNode<T> * node = m_queue.front();
+
+            m_queue.remove();
+
+            if (node->m_left) m_queue.add(node->m_left);
+            if (node->m_right) m_queue.add(node->m_right);
+        }
+
+        return ret;
+    }
+
+    T current()
+    {
+        if (!end())
+        {
+            return m_queue.front()->value;
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "No tree node at current position");
+        }
     }
 
     ~BTree()

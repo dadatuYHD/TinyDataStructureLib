@@ -535,6 +535,17 @@ void btree_demo(void)
     bt.insert(6, bt.find(3));
     bt.insert(7, bt.find(3));
     bt.insert(11, bt.find(6));
+
+    cout << bt.count() << endl;
+    cout << bt.height() << endl;
+    cout << bt.degree() << endl;
+
+    for (bt.begin(); !bt.end(); bt.next())
+    {
+        cout << bt.current() << " ";
+    }
+
+    cout << endl;
 }
 
 }

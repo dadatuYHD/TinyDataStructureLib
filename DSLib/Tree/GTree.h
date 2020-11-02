@@ -304,7 +304,7 @@ public:
         m_queue.clear();
     }
 
-    //traverse
+    //traverse the Gtree
     bool begin()
     {
         bool ret = (root() != nullptr);
