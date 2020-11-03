@@ -35,7 +35,7 @@ void linux_list_demo1(void)
         int value;
     };
 
-    struct Node l = {0};
+    struct Node l = {{nullptr, nullptr}, 0};
 
     struct list_head * list = (struct list_head *)&l;
     struct list_head * slider = nullptr;
@@ -70,7 +70,7 @@ void linux_list_demo2(void)
         struct list_head head;
     };
 
-    struct Node l = {0};
+    struct Node l = {0, {nullptr, nullptr}};
 
     struct list_head * list = &l.head;
     struct list_head * slider = nullptr;
@@ -471,7 +471,6 @@ void Sort_demo(void)
 void gtree_demo(void)
 {
     GTree<char> gtree;
-    TreeNode<char> * pGTreeNode = nullptr;
     GTreeNode<char> root;
 
     root.value = 'A';
@@ -534,7 +533,6 @@ void btree_demo(void)
     bt.insert(10, bt.find(5));
     bt.insert(6, bt.find(3));
     bt.insert(7, bt.find(3));
-    bt.insert(11, bt.find(6));
 
     cout << bt.count() << endl;
     cout << bt.height() << endl;
@@ -546,6 +544,53 @@ void btree_demo(void)
     }
 
     cout << endl;
+
+    cout << "clone btree" << endl;
+
+    SharedPointer< BTree<int> > btClone = bt.clone();
+
+    for (btClone->begin(); !btClone->end(); btClone->next())
+    {
+        cout << btClone->current() << " ";
+    }
+
+    cout << endl;
+
+    cout << "old binary tree == clone binary tree : " << (bt == *btClone) << endl;
+
+    cout << "old binary tree + clone binary tree : "<< endl;
+
+    SharedPointer< BTree<int> > addBtree = bt.add(*btClone);
+
+    for (addBtree->begin(); !addBtree->end(); addBtree->next())
+    {
+        cout << addBtree->current() << " ";
+    }
+
+    cout << endl;
+
+    cout << "bt + bt2 : "<< endl;
+
+    BTree<int> bt2;
+
+    bt2.insert(1, nullptr);
+
+    bt2.insert(2, bt2.find(1));
+    bt2.insert(3, bt2.find(1));
+    bt2.insert(4, bt2.find(2));
+    bt2.insert(5, bt2.find(2));
+    bt2.insert(8, bt2.find(4));
+    bt2.insert(9, bt2.find(4));
+
+    SharedPointer< BTree<int> > addBtree2 = bt.add(bt2);
+
+    for (addBtree2->begin(); !addBtree2->end(); addBtree2->next())
+    {
+        cout << addBtree2->current() << " ";
+    }
+
+
+
 }
 
 }
