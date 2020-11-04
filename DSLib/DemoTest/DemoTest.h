@@ -36,6 +36,7 @@ void QueueSolution_demo(void);
 void Sort_demo(void);
 void gtree_demo(void);
 void btree_demo(void);
+void btree_demo2(void);
 
 }
 

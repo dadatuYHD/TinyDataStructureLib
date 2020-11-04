@@ -588,9 +588,60 @@ void btree_demo(void)
     {
         cout << addBtree2->current() << " ";
     }
+}
 
+void btree_demo2(void)
+{
+    BTree<int> bt;
 
+    bt.insert(1, nullptr);
 
+    bt.insert(2, bt.find(1));
+    bt.insert(3, bt.find(1));
+    bt.insert(4, bt.find(2));
+    bt.insert(5, bt.find(2));
+    bt.insert(8, bt.find(4));
+    bt.insert(9, bt.find(4));
+    bt.insert(10, bt.find(5));
+    bt.insert(6, bt.find(3));
+    bt.insert(7, bt.find(3));
+
+    cout << bt.count() << endl;
+    cout << bt.height() << endl;
+    cout << bt.degree() << endl;
+
+    SharedPointer< Array<int> > sa = bt.traversal(LEVEL_ORDER);
+
+    for (int i = 0; i < sa->length(); i++)
+    {
+        cout << (*sa)[i] << " ";
+    }
+
+    cout << endl;
+
+    cout << "thread the btree" << endl;
+
+    BTreeNode<int> * node = bt.thread(LEVEL_ORDER);
+
+    cout << "btree count = " << bt.count() << endl;
+    cout << "btree height = " << bt.height() << endl;
+    cout << "btree degree = " << bt.degree() << endl;
+
+    while (node)
+    {
+        cout << node->value << " ";
+        node = node->m_right;
+    }
+
+    cout << endl;
+
+    BTreeNode<int> * temp = nullptr;
+    while (node)
+    {
+        temp = node;
+        node = node->m_right;
+        delete temp;
+    }
 }
 
 }

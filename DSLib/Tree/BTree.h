@@ -22,6 +22,7 @@ enum BTTraversal
     PRE_ORDER,
     IN_ORDER,
     POST_ORDER,
+    LEVEL_ORDER,
 };
 
 template <typename T>
@@ -224,6 +225,34 @@ protected:
         return ret;
     }
 
+    /****************************************************************
+     *Description:    according the arg order traverse the btree and
+     *                storage the btree node address to the queue
+     *Arg1[In][order]:binary tree traverse order
+     *Arg2[In][queue]:storage the node address
+     ****************************************************************/
+    void traversal(BTTraversal order, LinkQueue<BTreeNode<T> *>& queue)
+    {
+        switch (order)
+        {
+            case PRE_ORDER:
+                PreOrderTraversal(root(), queue);
+                break;
+            case IN_ORDER:
+                InOrderTraversal(root(), queue);
+                break;
+            case POST_ORDER:
+                PostOrderTraversal(root(), queue);
+                break;
+            case LEVEL_ORDER:
+                LevelOrderTraversal(root(), queue);
+                break;
+            default:
+                THROW_EXCEPTION(InvalidParameterException, "Parameter order is invalid ...");
+                break;
+        }
+    }
+
     void PreOrderTraversal(BTreeNode<T> * node, LinkQueue< BTreeNode<T> * >& queue)
     {
         if (node)
@@ -252,6 +281,58 @@ protected:
             PostOrderTraversal(node->m_right, queue);
             queue.add(node);
         }
+    }
+
+    void LevelOrderTraversal(BTreeNode<T> * node, LinkQueue< BTreeNode<T> * >& queue)
+    {
+        if (node)
+        {
+            LinkQueue< BTreeNode<T> * >tmp;
+
+            tmp.add(node);
+
+            while (tmp.length() > 0)
+            {
+                BTreeNode<T> * node = tmp.front();
+
+                if (node->m_left)  tmp.add(node->m_left);
+                if (node->m_right) tmp.add(node->m_right);
+
+                tmp.remove();
+                queue.add(node);
+            }
+        }
+    }
+
+    /****************************************************************
+     *Description:connect the btree node in the queue to dual linklist
+     *Arg[In][queue]:storage the btree node
+     *return:The first node address of dual linklist
+     ****************************************************************/
+    BTreeNode<T> * connect(LinkQueue< BTreeNode<T> * >& queue)
+    {
+        BTreeNode<T> * ret = nullptr;
+
+        if (queue.length() > 0)
+        {
+            ret = queue.front();
+
+            BTreeNode<T> * slider = queue.front();
+            queue.remove();
+            slider->m_left = nullptr;
+
+            while (queue.length() > 0)
+            {
+                slider->parent = nullptr;
+                slider->m_right = queue.front();
+                (queue.front())->m_left = slider;
+                slider = queue.front();
+                queue.remove();
+            }
+            slider->m_right = nullptr;
+        }
+
+        return ret;
     }
 
     BTreeNode<T> * clone(BTreeNode<T> * node) const
@@ -492,7 +573,11 @@ public:
         this->m_root = nullptr;
     }
 
-    //level traverse the BTree
+    /***************************************************
+     *
+     *            level traverse the BTree
+     *
+     ***************************************************/
     bool begin()
     {
         bool ret = (root() != nullptr);
@@ -541,32 +626,17 @@ public:
         }
     }
 
-    /*
+    /****************************************************
      *
-     *  traversal by preorder inorder and postorder
+     *   traversal by preorder inorder and postorder
      *
-     */
-
+     ****************************************************/
     SharedPointer< Array<T> > traversal(BTTraversal order)
     {
         DynamicArray<T> * ret = nullptr;
         LinkQueue<BTreeNode<T> *> queue;
 
-        switch (order)
-        {
-            case PRE_ORDER:
-                PreOrderTraversal(root(), queue);
-                break;
-            case IN_ORDER:
-                InOrderTraversal(root(), queue);
-                break;
-            case POST_ORDER:
-                PostOrderTraversal(root(), queue);
-                break;
-            default:
-                THROW_EXCEPTION(InvalidParameterException, "Parameter order is invalid ...");
-                break;
-        }
+        traversal(order, queue);
 
         ret = new DynamicArray<T>(queue.length());
 
@@ -588,9 +658,30 @@ public:
 
     /*************************************
      *
-     *       clone the binary tree
+     *       thread the binary tree
      *
-     *************************************/
+     ************************************/
+    BTreeNode<T> * thread(BTTraversal order)
+    {
+        LinkQueue< BTreeNode<T> * > queue;
+
+        traversal(order, queue);
+
+        BTreeNode<T> * node = connect(queue);
+
+        this->m_root = nullptr;
+
+        m_queue.clear();
+
+        return node;
+    }
+
+
+    /**********************************************
+     *
+     *         clone the binary tree
+     *
+     *********************************************/
 
     SharedPointer< BTree<T> > clone() const
     {
@@ -608,11 +699,11 @@ public:
         return ret;
     }
 
-    /*********************************
+    /**************************************************
      *
-     *    compare the binary tree
+     *         compare the binary tree
      *
-     *********************************/
+     **************************************************/
     bool operator == (const BTree<T>& btree)
     {
         return isEqual(root(), btree.root());
@@ -623,11 +714,11 @@ public:
         return !(*this == btree);
     }
 
-    /*********************************
+    /****************************************************
      *
-     *    the operator add of binary tree
+     *      the operator add of binary tree
      *
-     *********************************/
+     ****************************************************/
     SharedPointer< BTree<T> > add(const BTree<T>& btree) const
     {
         BTree<T> * ret = new BTree();
