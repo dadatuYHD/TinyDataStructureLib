@@ -7,6 +7,8 @@
 #include "Exception/Exception.h"
 #include "Queue/LinkQueue.h"
 #include "Array/DynamicArray.h"
+#include "Algorithm/BTreeAlgorithm.h"
+
 
 namespace DSLib {
 
@@ -15,14 +17,6 @@ enum BtNodePos
     ANY,
     LEFT,
     RIGHT,
-};
-
-enum BTTraversal
-{
-    PRE_ORDER,
-    IN_ORDER,
-    POST_ORDER,
-    LEVEL_ORDER,
 };
 
 template <typename T>
@@ -223,85 +217,6 @@ protected:
         }
 
         return ret;
-    }
-
-    /****************************************************************
-     *Description:    according the arg order traverse the btree and
-     *                storage the btree node address to the queue
-     *Arg1[In][order]:binary tree traverse order
-     *Arg2[In][queue]:storage the node address
-     ****************************************************************/
-    void traversal(BTTraversal order, LinkQueue<BTreeNode<T> *>& queue)
-    {
-        switch (order)
-        {
-            case PRE_ORDER:
-                PreOrderTraversal(root(), queue);
-                break;
-            case IN_ORDER:
-                InOrderTraversal(root(), queue);
-                break;
-            case POST_ORDER:
-                PostOrderTraversal(root(), queue);
-                break;
-            case LEVEL_ORDER:
-                LevelOrderTraversal(root(), queue);
-                break;
-            default:
-                THROW_EXCEPTION(InvalidParameterException, "Parameter order is invalid ...");
-                break;
-        }
-    }
-
-    void PreOrderTraversal(BTreeNode<T> * node, LinkQueue< BTreeNode<T> * >& queue)
-    {
-        if (node)
-        {
-            queue.add(node);
-            PreOrderTraversal(node->m_left, queue);
-            PreOrderTraversal(node->m_right, queue);
-        }
-    }
-
-    void InOrderTraversal(BTreeNode<T> * node, LinkQueue< BTreeNode<T> * >& queue)
-    {
-        if (node)
-        {
-            InOrderTraversal(node->m_left, queue);
-            queue.add(node);
-            InOrderTraversal(node->m_right, queue);
-        }
-    }
-
-    void PostOrderTraversal(BTreeNode<T> * node, LinkQueue< BTreeNode<T> * >& queue)
-    {
-        if (node)
-        {
-            PostOrderTraversal(node->m_left, queue);
-            PostOrderTraversal(node->m_right, queue);
-            queue.add(node);
-        }
-    }
-
-    void LevelOrderTraversal(BTreeNode<T> * node, LinkQueue< BTreeNode<T> * >& queue)
-    {
-        if (node)
-        {
-            LinkQueue< BTreeNode<T> * >tmp;
-
-            tmp.add(node);
-
-            while (tmp.length() > 0)
-            {
-                BTreeNode<T> * node = tmp.front();
-
-                if (node->m_left)  tmp.add(node->m_left);
-                if (node->m_right) tmp.add(node->m_right);
-
-                tmp.remove();
-                queue.add(node);
-            }
-        }
     }
 
     /****************************************************************
@@ -614,6 +529,16 @@ public:
         return ret;
     }
 
+    /****************************************************
+     *
+     *    traversal by preorder inorder and postorder
+     *
+     ****************************************************/
+    SharedPointer< Array<T> > traversal(BTTraversal order)
+    {
+        return BTreeAlgorithm<T>::traversal(root(), order);
+    }
+
     T current()
     {
         if (!end())
@@ -626,36 +551,6 @@ public:
         }
     }
 
-    /****************************************************
-     *
-     *   traversal by preorder inorder and postorder
-     *
-     ****************************************************/
-    SharedPointer< Array<T> > traversal(BTTraversal order)
-    {
-        DynamicArray<T> * ret = nullptr;
-        LinkQueue<BTreeNode<T> *> queue;
-
-        traversal(order, queue);
-
-        ret = new DynamicArray<T>(queue.length());
-
-        if (ret)
-        {
-            for (int i = 0; i < ret->length(); i++)
-            {
-                (*ret)[i] = (queue.front())->value;
-                queue.remove();
-            }
-        }
-        else
-        {
-            THROW_EXCEPTION(NoEnoughMemoryException, "No memory to create dynamicarray ...");
-        }
-
-        return ret;
-    }
-
     /*************************************
      *
      *       thread the binary tree
@@ -665,7 +560,7 @@ public:
     {
         LinkQueue< BTreeNode<T> * > queue;
 
-        traversal(order, queue);
+        BTreeAlgorithm<T>::traversal(root(), order, queue);
 
         BTreeNode<T> * node = connect(queue);
 

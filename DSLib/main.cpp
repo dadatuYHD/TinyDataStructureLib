@@ -18,7 +18,7 @@ using namespace DSLib;
 
 int main()
 {
-    btree_demo2();
+    btreeAlgorithm_demo();
 
     return 0;
 }

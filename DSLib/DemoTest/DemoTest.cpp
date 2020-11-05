@@ -644,4 +644,58 @@ void btree_demo2(void)
     }
 }
 
+void btreeAlgorithm_demo(void)
+{
+    BTree<int> bt;
+
+    bt.insert(1, nullptr);
+
+    bt.insert(2, bt.find(1));
+    bt.insert(3, bt.find(1));
+    bt.insert(4, bt.find(2));
+    bt.insert(5, bt.find(2));
+    bt.insert(8, bt.find(4));
+    bt.insert(10, bt.find(5));
+    bt.insert(6, bt.find(3));
+    bt.insert(7, bt.find(6));
+
+    for (bt.begin(); !bt.end(); bt.next())
+    {
+        cout << bt.current() << " ";
+    }
+    cout << endl;
+
+    cout << "------------------------------------" << endl;
+    BTreeNode<int> * root = bt.root();
+    BTreeAlgorithm<int>::delOneDeg2(root);
+    SharedPointer< Array<int> > sa = BTreeAlgorithm<int>::traversal(root, LEVEL_ORDER);
+
+    for (int i = 0; i < sa->length(); i++)
+    {
+        cout << (*sa)[i] << " ";
+    }
+
+    cout << endl;
+
+    cout << "------------------------------------" << endl;
+
+    int a[] = {8, 10, 7};
+
+    for (int i = 0; i < 3; i++)
+    {
+        BTreeNode<int> * n = bt.find(a[i]);
+
+        while (n != nullptr)
+        {
+            cout << n->value << " ";
+
+            n = dynamic_cast<BTreeNode<int> *>(n->parent);
+        }
+
+        cout << endl;
+    }
+
+    cout << endl;
+}
+
 }

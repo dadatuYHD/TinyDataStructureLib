@@ -20,6 +20,7 @@
 #include "Tree/GTree.h"
 #include "Tree/BTree.h"
 
+
 namespace DSLib {
 
 void josephus(int n, int s, int m);
@@ -37,6 +38,7 @@ void Sort_demo(void);
 void gtree_demo(void);
 void btree_demo(void);
 void btree_demo2(void);
+void btreeAlgorithm_demo(void);
 
 }
 
