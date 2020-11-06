@@ -610,7 +610,7 @@ void btree_demo2(void)
     cout << bt.height() << endl;
     cout << bt.degree() << endl;
 
-    SharedPointer< Array<int> > sa = bt.traversal(LEVEL_ORDER);
+    SharedPointer< Array<int> > sa = bt.traversal(IN_ORDER);
 
     for (int i = 0; i < sa->length(); i++)
     {
@@ -619,9 +619,11 @@ void btree_demo2(void)
 
     cout << endl;
 
+    /**************************************************************************************/
+
     cout << "thread the btree" << endl;
 
-    BTreeNode<int> * node = bt.thread(LEVEL_ORDER);
+    BTreeNode<int> * node = bt.thread(IN_ORDER, NOT_USE_DataStructual);
 
     cout << "btree count = " << bt.count() << endl;
     cout << "btree height = " << bt.height() << endl;
@@ -630,16 +632,18 @@ void btree_demo2(void)
     while (node)
     {
         cout << node->value << " ";
-        node = node->m_right;
+        node = node->m_left;
     }
 
     cout << endl;
+
+    /**************************************************************************************/
 
     BTreeNode<int> * temp = nullptr;
     while (node)
     {
         temp = node;
-        node = node->m_right;
+        node = node->m_left;
         delete temp;
     }
 }

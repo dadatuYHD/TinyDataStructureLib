@@ -13,6 +13,12 @@ enum BTTraversal
     LEVEL_ORDER,
 };
 
+enum BTDataStructual
+{
+    USE_DataStructual,
+    NOT_USE_DataStructual,
+};
+
 template <typename T>
 class BTreeAlgorithm : public Object
 {
@@ -67,6 +73,159 @@ protected:
             }
         }
     }
+
+    /****************************************************************
+     *Description:connect the btree node in the queue to dual linklist
+     *Arg[In][queue]:storage the btree node
+     *return:The first node address of dual linklist
+     ****************************************************************/
+    static BTreeNode<T> * connect(LinkQueue< BTreeNode<T> * >& queue)
+    {
+        BTreeNode<T> * ret = nullptr;
+
+        if (queue.length() > 0)
+        {
+            ret = queue.front();
+
+            BTreeNode<T> * slider = queue.front();
+            queue.remove();
+            slider->m_left = nullptr;
+
+            while (queue.length() > 0)
+            {
+                slider->parent = nullptr;
+                slider->m_right = queue.front();
+                (queue.front())->m_left = slider;
+                slider = queue.front();
+                queue.remove();
+            }
+            slider->m_right = nullptr;
+        }
+
+        return ret;
+    }
+
+    static void PreOrderTraversal(BTreeNode<T> * node, BTreeNode<T> * &preNode, BTreeNode<T> * &leftNode)
+    {
+//        if (node)
+//        {
+//            leftNode = node->m_left;
+//            node->m_left = preNode;
+
+//            if (preNode)
+//            {
+//                preNode->m_right = node;
+//            }
+
+//            preNode = node;
+
+//            PreOrderTraversal(leftNode, preNode, leftNode);
+//            PreOrderTraversal(node->m_right, preNode, leftNode);
+
+//            node->m_left = nullptr;
+//        }
+    }
+
+    static void InOrderTraversal(BTreeNode<T> * node, BTreeNode<T> * &preNode)
+    {
+        if (node)
+        {
+            InOrderTraversal(node->m_left, preNode);
+            node->m_left = preNode;
+
+            if (preNode)
+            {
+                preNode->m_right = node;
+            }
+
+            preNode = node;
+
+            InOrderTraversal(node->m_right, preNode);
+        }
+    }
+
+    static void InOrderTraversal(BTreeNode<T> * node, BTreeNode<T> * &head, BTreeNode<T> * &tail)
+    {
+
+        if (node)
+        {
+            BTreeNode<T> * h = nullptr;
+            BTreeNode<T> * t = nullptr;
+
+            InOrderTraversal(node->m_left, h, t);
+
+            node->m_left = t;
+            if (t) t->m_right = node;
+            head = h ? h : node;
+            head->m_left = nullptr;
+
+            h = nullptr;
+            t = nullptr;
+
+            InOrderTraversal(node->m_right, h, t);
+
+            node->m_right = h;
+            if (h) h->m_left = node;
+            tail = t ? t : node;
+            tail->m_right = nullptr;
+        }
+    }
+
+    static void PostOrderTraversal(BTreeNode<T> * node, BTreeNode<T> * &preNode)
+    {
+//        if (node)
+//        {
+//            PostOrderTraversal(node->m_left, preNode);
+//            PostOrderTraversal(node->m_right, preNode);
+
+//            node->m_left = preNode;
+
+//            if (preNode)
+//            {
+//                preNode->m_right = node;
+//            }
+
+//            preNode = node;
+
+//        }
+    }
+
+    /*****************************************************************
+     * Description    :according the arg order traverse and thread the btree
+     * Arg1[In][node] :root node of the binary tree
+     * Arg2[In][order]:binary tree traverse order
+     *****************************************************************/
+    static void traversalByPre(BTreeNode<T> * &node, BTTraversal order)
+    {
+        BTreeNode<T> * preNode = nullptr;
+        BTreeNode<T> * tempNode = nullptr;
+        BTreeNode<T> * headNode = nullptr;
+        BTreeNode<T> * tailNode = nullptr;
+
+
+        switch (order)
+        {
+            case PRE_ORDER:
+                PreOrderTraversal(node, preNode, tempNode);
+                break;
+            case IN_ORDER:
+#define USE_TWO 1
+#if USE_TWO
+                InOrderTraversal(node, headNode, tailNode);
+                node = tailNode;
+#else
+                InOrderTraversal(node, preNode);
+#endif
+                break;
+            case POST_ORDER:
+                PostOrderTraversal(node, preNode);
+                break;
+            default:
+                THROW_EXCEPTION(InvalidParameterException, "Parameter order is invalid ...");
+                break;
+        }
+    }
+
 public:
     /****************************************************************
      * Description    :delete the node which the degree is one,
@@ -196,6 +355,38 @@ public:
         }
 
         return ret;
+    }
+
+    /*****************************************************************
+     * Description    :Use the queue as auxiliary data_structure to
+     *                 thread the binary tree
+     * Arg1[In][node] :root node of the binary tree
+     * Arg2[In][order]:binary tree traverse order
+     * return         :The first node address of the dual linklist
+     *****************************************************************/
+
+    static BTreeNode<T> * thread(BTreeNode<T> * node, BTTraversal order, BTDataStructual useDataStructure)
+    {
+        BTreeNode<T> * firstNode = nullptr;
+
+        if (useDataStructure == USE_DataStructual)
+        {
+            LinkQueue< BTreeNode<T> * > queue;
+
+            BTreeAlgorithm<T>::traversal(node, order, queue);
+
+            firstNode = connect(queue);
+        }
+        else
+        {
+            BTreeAlgorithm<T>::traversalByPre(node, order);  //only IN_ORDER can run
+
+            firstNode = node;
+
+            //while ((firstNode) && (firstNode->m_left != nullptr)) firstNode = firstNode->m_left;
+        }
+
+        return firstNode;
     }
 };
 

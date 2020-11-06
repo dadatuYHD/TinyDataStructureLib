@@ -219,37 +219,6 @@ protected:
         return ret;
     }
 
-    /****************************************************************
-     *Description:connect the btree node in the queue to dual linklist
-     *Arg[In][queue]:storage the btree node
-     *return:The first node address of dual linklist
-     ****************************************************************/
-    BTreeNode<T> * connect(LinkQueue< BTreeNode<T> * >& queue)
-    {
-        BTreeNode<T> * ret = nullptr;
-
-        if (queue.length() > 0)
-        {
-            ret = queue.front();
-
-            BTreeNode<T> * slider = queue.front();
-            queue.remove();
-            slider->m_left = nullptr;
-
-            while (queue.length() > 0)
-            {
-                slider->parent = nullptr;
-                slider->m_right = queue.front();
-                (queue.front())->m_left = slider;
-                slider = queue.front();
-                queue.remove();
-            }
-            slider->m_right = nullptr;
-        }
-
-        return ret;
-    }
-
     BTreeNode<T> * clone(BTreeNode<T> * node) const
     {
         BTreeNode<T> * pNode = nullptr;
@@ -551,18 +520,15 @@ public:
         }
     }
 
-    /*************************************
+    /*************************************************************************
      *
      *       thread the binary tree
+     * useDataStructure = NOT_USE_DataStructual only the IN_ORDER can run
      *
-     ************************************/
-    BTreeNode<T> * thread(BTTraversal order)
+     *************************************************************************/
+    BTreeNode<T> * thread(BTTraversal order, BTDataStructual useDataStructure)
     {
-        LinkQueue< BTreeNode<T> * > queue;
-
-        BTreeAlgorithm<T>::traversal(root(), order, queue);
-
-        BTreeNode<T> * node = connect(queue);
+        BTreeNode<T> * node =  BTreeAlgorithm<T>::thread(root(), order, useDataStructure);
 
         this->m_root = nullptr;
 
@@ -570,7 +536,6 @@ public:
 
         return node;
     }
-
 
     /**********************************************
      *
@@ -599,6 +564,7 @@ public:
      *         compare the binary tree
      *
      **************************************************/
+
     bool operator == (const BTree<T>& btree)
     {
         return isEqual(root(), btree.root());
