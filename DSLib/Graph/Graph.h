@@ -9,12 +9,12 @@
 namespace DSLib {
 
 template <typename Vertex, typename Weight>
-class Graph : public Object
+class Graph: public Object
 {
 public:
     virtual Vertex getVertex(int i) = 0;
-    virtual bool getVertex(int i, Vertex& Value) = 0;
-    virtual bool setVertex(int i, const Vertex& Value) = 0;
+    virtual bool getVertex(int i, Vertex& value) = 0;
+    virtual bool setVertex(int i, const Vertex& value) = 0;
     virtual SharedPointer< Array<int> > getAdjacent(int i) = 0;
     virtual Weight getEdge(int i, int j) = 0;
     virtual bool getEdge(int i, int j, Weight& value) = 0;
