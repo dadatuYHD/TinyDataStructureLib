@@ -702,4 +702,59 @@ void btreeAlgorithm_demo(void)
     cout << endl;
 }
 
+void MatrixGraph_demo1(void)
+{
+    MatrixGraph<3, char, int> mGraph;
+
+    mGraph.setVertex(0, 'A');
+    mGraph.setVertex(1, 'B');
+    mGraph.setVertex(2, 'C');
+    mGraph.setEdge(0, 1, 1);
+    mGraph.setEdge(1, 0, 2);
+    mGraph.setEdge(1, 2, 3);
+
+
+
+    cout << "vertexCount: " << mGraph.vertexCount() << endl;
+    cout << "edgeCount: " << mGraph.edgeCount() << endl;
+
+    cout << "Vertex(0): " << mGraph.getVertex(0) << endl;
+    cout << "Vertex(1): " << mGraph.getVertex(1) << endl;
+    cout << "Vertex(2): " << mGraph.getVertex(2) << endl;
+
+
+    cout << "ID(0): " << mGraph.inDegree(0) << endl;
+    cout << "ID(1): " << mGraph.inDegree(1) << endl;
+    cout << "ID(2): " << mGraph.inDegree(2) << endl;
+
+    cout << "OD(0): " << mGraph.outDegree(0) << endl;
+    cout << "OD(1): " << mGraph.outDegree(1) << endl;
+    cout << "OD(2): " << mGraph.outDegree(2) << endl;
+
+    cout << "TD(0): " << mGraph.TDegree(0) << endl;
+    cout << "TD(1): " << mGraph.TDegree(1) << endl;
+    cout << "TD(2): " << mGraph.TDegree(2) << endl;
+
+    cout << "Weight(0, 1): " << mGraph.getEdge(0, 1) << endl;
+    cout << "Weight(1, 0): " << mGraph.getEdge(1, 0) << endl;
+    cout << "Weight(1, 2): " << mGraph.getEdge(1, 2) << endl;
+
+    int vertex = 1;
+    SharedPointer< Array<int> > pAdjacent = mGraph.getAdjacent(vertex);
+
+    cout << "Vertex(" << vertex << ") adjacent is : ";
+    for (int i = 0; i < pAdjacent->length(); i++)
+    {
+        cout << (*pAdjacent)[i] << " ";
+    }
+
+    cout << endl;
+
+    cout << "delete edge(1, 2): " << mGraph.removeEdge(1, 2) << endl;
+    cout << mGraph.getEdge(1, 2) << endl;
+
+
+
+}
+
 }

@@ -18,7 +18,7 @@ using namespace DSLib;
 
 int main()
 {
-    btree_demo2();
+    MatrixGraph_demo1();
 
     return 0;
 }

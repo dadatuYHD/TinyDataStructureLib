@@ -19,6 +19,7 @@
 #include "Array/StaticArray.h"
 #include "Tree/GTree.h"
 #include "Tree/BTree.h"
+#include "Graph/MatrixGraph.h"
 
 
 namespace DSLib {
@@ -39,6 +40,7 @@ void gtree_demo(void);
 void btree_demo(void);
 void btree_demo2(void);
 void btreeAlgorithm_demo(void);
+void MatrixGraph_demo1(void);
 
 }
 

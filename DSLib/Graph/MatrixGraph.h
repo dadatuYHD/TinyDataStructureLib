@@ -4,6 +4,7 @@
 #include "Graph.h"
 #include "Exception/Exception.h"
 #include "Array/DynamicArray.h"
+#include <iostream>
 
 namespace DSLib {
 
@@ -12,19 +13,19 @@ namespace DSLib {
 /*************************************************************
  * Function   : Create the directed graph by adjacency matrix
  * Description:
- * Weight:0、INF、Positive number
+ * W:0、INF、Positive number
  *               0: The vertex gets the distance from itself
  *             INF: No edge between vertex
  * Positive number: The weight of the edge between two vertex
  * ***********************************************************
- * Vertex:Vertex are numbered from 0
+ * V:Vertex are numbered from 0
  *************************************************************/
-template <int N, typename Vertex, typename Weight>
-class MatrixGraph : public Graph <Vertex, Weight>
+template <int N, typename V, typename W>
+class MatrixGraph : public Graph <V, W>
 {
 protected:
-    Vertex* m_vertexes[N];     /*storage the vertex value*/
-    Weight* m_edges[N][N];     /*Adjacency Matrix*/
+    V* m_pVertexes[N];     /*storage the vertex value*/
+    W* m_pEdges[N][N];     /*Adjacency Matrix*/
     int m_edgeCount;
 
 public:
@@ -32,18 +33,18 @@ public:
     {
         for (int i = 0; i < this->vertexCount(); i++)
         {
-            m_vertexes[i] = nullptr;
+            m_pVertexes[i] = nullptr;
 
             for (int j = 0; j < this->vertexCount(); j++)
             {
-                m_edges[i][j] = nullptr;
+                m_pEdges[i][j] = nullptr;
             }
         }
     }
 
-    Vertex getVertex(int i)
+    V getVertex(int i)
     {
-        Vertex value;
+        V value;
 
         if (!getVertex(i, value))
         {
@@ -53,43 +54,43 @@ public:
         return value;
     }
 
-    bool getVertex(int i, Vertex& value)
+    bool getVertex(int i, V& value)
     {
-        bool ret = ((0 <= i) && (i <= this->vertexCount()));
+        bool ret = ((0 <= i) && (i < this->vertexCount()));
 
         if (ret)
         {
-            if (m_vertexes[i])
+            if (m_pVertexes[i])
             {
-                value = *(m_vertexes[i]);
+                value = *(m_pVertexes[i]);
             }
             else
             {
-                THROW_EXCEPTION(InvalidOperationException, "The vertex has not value ...");
+                THROW_EXCEPTION(InvalidOperationException, "The m_pVertexes[i] is nullptr ...");
             }
         }
 
         return ret;
     }
 
-    bool setVertex(int i, const Vertex& value)
+    bool setVertex(int i, const V& value)
     {
-        bool ret = ((0 <= i) && (i <= this->vertexCount()));
+        bool ret = ((0 <= i) && (i < this->vertexCount()));
 
         if (ret)
         {
-            Vertex* pVertex = m_vertexes[i];
+            V* pVertex = m_pVertexes[i];
 
             if (!pVertex)
             {
-                pVertex = new Vertex();
+                pVertex = new V();
             }
 
             if (pVertex)
             {
                 *pVertex = value;
 
-                m_vertexes[i] = pVertex;
+                m_pVertexes[i] = pVertex;
             }
             else
             {
@@ -104,13 +105,13 @@ public:
     {
         DynamicArray<int>* pRet = nullptr;
 
-        if ((0 <= i) && (i <= this->vertexCount()))
+        if ((0 <= i) && (i < this->vertexCount()))
         {
             int vertexCount = 0;
 
             for (int j = 0; j < this->vertexCount(); j++)
             {
-                if ( m_edges[i][j] && *(m_edges[i][j]) )
+                if ( m_pEdges[i][j] && *(m_pEdges[i][j]) && (*(m_pEdges[i][j]) != INF) )
                 {
                     vertexCount++;
                 }
@@ -120,12 +121,19 @@ public:
 
             if (pRet)
             {
-                for (int j =0, k = 0; j < this->vertexCount(); j++)
+                if (vertexCount)
                 {
-                    if ( m_edges[i][j] && *(m_edges[i][j]) )
+                    for (int j =0, k = 0; j < this->vertexCount(); j++)
                     {
-                        pRet->set(k++, j);
+                        if ( m_pEdges[i][j] && *(m_pEdges[i][j]) && (*(m_pEdges[i][j]) != INF) )
+                        {
+                            pRet->set(k++, j);
+                        }
                     }
+                }
+                else
+                {
+                    cout << "Vertex(" << i <<  ") is not adjacent Vertex" << endl;
                 }
             }
             else
@@ -137,11 +145,13 @@ public:
         {
             THROW_EXCEPTION(InvalidParameterException, "Parameter i is invalid ...");
         }
+
+        return pRet;
     }
 
-    Weight getEdge(int i, int j)
+    W getEdge(int i, int j)
     {
-        Weight weight;
+        W weight;
 
         if (!getEdge(i, j, weight))
         {
@@ -151,38 +161,45 @@ public:
         return weight;
     }
 
-    bool getEdge(int i, int j, Weight& value)
+    bool getEdge(int i, int j, W& value)
     {
-        bool ret = ( (0 <= i) && (i <= this->vertexCount()) &&
-                     (0 <= j) && (j <= this->vertexCount()) );
+        bool ret = ( (0 <= i) && (i < this->vertexCount()) &&
+                     (0 <= j) && (j < this->vertexCount()) );
 
         if (ret)
         {
-            if (m_edges[i][j])
+            if (m_pEdges[i][j])
             {
-                value = *(m_edges[i][j]);
+                if (*(m_pEdges[i][j]) != INF)
+                {
+                    value = *(m_pEdges[i][j]);
+                }
+                else
+                {
+                    cout << "the edge(" << i << "-->" << j << ") is not exist ..." << endl;
+                }
             }
             else
             {
-                THROW_EXCEPTION(InvalidOperationException, "The edge has not exist ...");
+                THROW_EXCEPTION(InvalidOperationException, "The adjacent matrix m_pEdges[i][j] is nullptr ...");
             }
         }
 
         return ret;
     }
 
-    bool setEdge(int i, int j, const Weight& value)
+    bool setEdge(int i, int j, const W& value)
     {
-        bool ret = ( (0 <= i) && (i <= this->vertexCount()) &&
-                     (0 <= j) && (j <= this->vertexCount()) );
+        bool ret = ( (0 <= i) && (i < this->vertexCount()) &&
+                     (0 <= j) && (j < this->vertexCount()) );
 
         if (ret)
         {
-            Weight* pEdge = m_edges[i][j];
+            W* pEdge = m_pEdges[i][j];
 
             if (!pEdge)
             {
-                pEdge = new Weight();
+                pEdge = new W();
                 m_edgeCount++;
             }
 
@@ -190,7 +207,7 @@ public:
             {
                 *pEdge = value;
 
-                m_edges[i] = pEdge;
+                m_pEdges[i][j] = pEdge;
             }
             else
             {
@@ -203,21 +220,24 @@ public:
 
     bool removeEdge(int i, int j)
     {
-        bool ret = ( (0 <= i) && (i <= this->vertexCount()) &&
-                     (0 <= j) && (j <= this->vertexCount()) );
+        bool ret = ( (0 <= i) && (i < this->vertexCount()) &&
+                     (0 <= j) && (j < this->vertexCount()) );
 
         if (ret)
         {
-            Weight* pToDel = m_edges[i][j];
+//            W* pToDel = m_pEdges[i][j];
 
-            m_edges[i][j] = nullptr;
+//            m_pEdges[i][j] = nullptr;
 
-            if (pToDel)
-            {
-                m_edgeCount--;
+//            if (pToDel)
+//            {
+//                m_edgeCount--;
 
-                delete pToDel;
-            }
+//                delete pToDel;
+//            }
+            *(m_pEdges[i][j]) = INF;
+
+            m_edgeCount--;
         }
 
         return ret;
@@ -241,7 +261,7 @@ public:
         {
             for (int j = 0; j < this->vertexCount(); j++)
             {
-                if ( m_edges[i][j] && *(m_edges[i][j]) )
+                if ( m_pEdges[i][j] && *(m_pEdges[i][j]) && (*(m_pEdges[i][j]) != INF) )
                 {
                     ret++;
                 }
@@ -263,7 +283,7 @@ public:
         {
             for (int j = 0; j < this->vertexCount(); j++)
             {
-                if ( m_edges[j][i] && *(m_edges[j][i]) )
+                if ( m_pEdges[j][i] && *(m_pEdges[j][i]) && (*(m_pEdges[j][i]) != INF) )
                 {
                     ret++;
                 }
@@ -283,10 +303,24 @@ public:
         {
             for (int j = 0; j < this->vertexCount(); j++)
             {
-                delete m_edges[i][j];
+                W* pToDel = m_pEdges[i][j];
+
+                m_pEdges[i][j] = nullptr;
+
+                if (pToDel)
+                {
+                    delete pToDel;
+                }
             }
 
-            delete m_vertexes[i];
+            V* pToDel = m_pVertexes[i];
+
+            m_pVertexes[i] = nullptr;
+
+            if (pToDel)
+            {
+                delete pToDel;
+            }
         }
     }
 

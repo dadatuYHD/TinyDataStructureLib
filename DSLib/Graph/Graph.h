@@ -8,17 +8,17 @@
 
 namespace DSLib {
 
-template <typename Vertex, typename Weight>
+template <typename V, typename W>
 class Graph: public Object
 {
 public:
-    virtual Vertex getVertex(int i) = 0;
-    virtual bool getVertex(int i, Vertex& value) = 0;
-    virtual bool setVertex(int i, const Vertex& value) = 0;
+    virtual V getVertex(int i) = 0;
+    virtual bool getVertex(int i, V& value) = 0;
+    virtual bool setVertex(int i, const V& value) = 0;
     virtual SharedPointer< Array<int> > getAdjacent(int i) = 0;
-    virtual Weight getEdge(int i, int j) = 0;
-    virtual bool getEdge(int i, int j, Weight& value) = 0;
-    virtual bool setEdge(int i, int j, const Weight& value) = 0;
+    virtual W getEdge(int i, int j) = 0;
+    virtual bool getEdge(int i, int j, W& value) = 0;
+    virtual bool setEdge(int i, int j, const W& value) = 0;
     virtual bool removeEdge(int i, int j) = 0;
     virtual int vertexCount() = 0;
     virtual int edgeCount() = 0;
