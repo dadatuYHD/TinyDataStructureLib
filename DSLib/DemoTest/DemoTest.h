@@ -20,6 +20,8 @@
 #include "Tree/GTree.h"
 #include "Tree/BTree.h"
 #include "Graph/MatrixGraph.h"
+#include "Graph/LinkListGraph.h"
+
 
 
 namespace DSLib {
@@ -41,6 +43,7 @@ void btree_demo(void);
 void btree_demo2(void);
 void btreeAlgorithm_demo(void);
 void MatrixGraph_demo1(void);
+void LinkListGraph_demo(void);
 
 }
 

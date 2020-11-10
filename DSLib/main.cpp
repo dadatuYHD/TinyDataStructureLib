@@ -18,7 +18,7 @@ using namespace DSLib;
 
 int main()
 {
-    MatrixGraph_demo1();
+    LinkListGraph_demo();
 
     return 0;
 }

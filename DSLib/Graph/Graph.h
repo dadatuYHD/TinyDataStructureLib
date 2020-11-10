@@ -5,7 +5,6 @@
 #include "SmartPointer/SharedPointer.h"
 #include "Array/DynamicArray.h"
 
-
 namespace DSLib {
 
 template <typename V, typename W>

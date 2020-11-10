@@ -752,8 +752,10 @@ void MatrixGraph_demo1(void)
 
     cout << "delete edge(1, 2): " << mGraph.removeEdge(1, 2) << endl;
     cout << mGraph.getEdge(1, 2) << endl;
+}
 
-
+void LinkListGraph_demo(void)
+{
 
 }
 
