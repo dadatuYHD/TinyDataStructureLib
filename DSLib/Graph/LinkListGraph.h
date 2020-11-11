@@ -1,11 +1,7 @@
 #ifndef LINKLISTGRAPH_H
 #define LINKLISTGRAPH_H
 
-#include <iostream>
 #include "Graph.h"
-#include "Exception/Exception.h"
-#include "Array/DynamicArray.h"
-#include "List/LinkList.h"
 
 namespace DSLib {
 
@@ -60,7 +56,7 @@ public:
     /****************************************************************
      * Arg[In][num]:the number of vertex
      ****************************************************************/
-    LinkListGraph(unsigned int num = 0)
+    LinkListGraph(int num = 0)
     {
         for (int i = 0; i < num; i++)
         {
@@ -180,8 +176,7 @@ public:
             {
                 for (int i = (m_ajLinkList.move(0), 0); !m_ajLinkList.end(); m_ajLinkList.next(), i++)
                 {
-                    int pos = ((m_ajLinkList.current())->edge).find(Edge(i, index)) ||
-                              ((m_ajLinkList.current())->edge).find(Edge(index, i));
+                    int pos = ((m_ajLinkList.current())->edge).find(Edge(i, index));
 
                     if (pos >= 0)
                     {
@@ -191,6 +186,9 @@ public:
 
                 delete pVertex->m_pVertexData;
                 delete pVertex;
+
+                pVertex->m_pVertexData = nullptr;
+                pVertex = nullptr;
             }
         }
         else
@@ -207,12 +205,11 @@ public:
 
         if ((0 <= i) && (i < this->vertexCount()))
         {
-            int vertexCount = 0;
             Vertex* pVertex = m_ajLinkList.get(i);
 
             if (pVertex)
             {
-                pRet = new DynamicArray<int>(vertexCount);
+                pRet = new DynamicArray<int>((pVertex->edge).length());
 
                 if (pRet)
                 {
@@ -368,7 +365,7 @@ public:
 
                 for (edge.move(0); !(edge.end()); edge.next())
                 {
-                    if (edge.current().endVertx == i)
+                    if (edge.current().endVertex == i)
                     {
                         ret++;
                         break;

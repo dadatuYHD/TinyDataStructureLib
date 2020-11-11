@@ -2,9 +2,6 @@
 #define MATRIXGRAPH_H
 
 #include "Graph.h"
-#include "Exception/Exception.h"
-#include "Array/DynamicArray.h"
-#include <iostream>
 
 namespace DSLib {
 
@@ -14,7 +11,9 @@ namespace DSLib {
  * Function   : Create the directed graph by adjacency matrix
  * Description:
  * W:0、INF、Positive number
- *               0: The vertex gets the distance from itself
+ *               0: if the vertex number is dfiffent and
+ *                  this graph is undirected graph, it
+ *                  is vertex itself
  *             INF: No edge between vertex
  * Positive number: The weight of the edge between two vertex
  * ***********************************************************
@@ -111,7 +110,7 @@ public:
 
             for (int j = 0; j < this->vertexCount(); j++)
             {
-                if ( m_pEdges[i][j] && *(m_pEdges[i][j]) && (*(m_pEdges[i][j]) != INF) )
+                if ( m_pEdges[i][j] && (*(m_pEdges[i][j]) != INF) )
                 {
                     vertexCount++;
                 }
@@ -125,7 +124,7 @@ public:
                 {
                     for (int j =0, k = 0; j < this->vertexCount(); j++)
                     {
-                        if ( m_pEdges[i][j] && *(m_pEdges[i][j]) && (*(m_pEdges[i][j]) != INF) )
+                        if ( m_pEdges[i][j] && (*(m_pEdges[i][j]) != INF) )
                         {
                             pRet->set(k++, j);
                         }
@@ -261,7 +260,7 @@ public:
         {
             for (int j = 0; j < this->vertexCount(); j++)
             {
-                if ( m_pEdges[i][j] && *(m_pEdges[i][j]) && (*(m_pEdges[i][j]) != INF) )
+                if ( m_pEdges[i][j] && (*(m_pEdges[i][j]) != INF) )
                 {
                     ret++;
                 }
@@ -283,7 +282,7 @@ public:
         {
             for (int j = 0; j < this->vertexCount(); j++)
             {
-                if ( m_pEdges[j][i] && *(m_pEdges[j][i]) && (*(m_pEdges[j][i]) != INF) )
+                if ( m_pEdges[j][i] && (*(m_pEdges[j][i]) != INF) )
                 {
                     ret++;
                 }

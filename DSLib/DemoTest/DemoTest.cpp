@@ -704,6 +704,7 @@ void btreeAlgorithm_demo(void)
 
 void MatrixGraph_demo1(void)
 {
+#if 0
     MatrixGraph<3, char, int> mGraph;
 
     mGraph.setVertex(0, 'A');
@@ -752,11 +753,105 @@ void MatrixGraph_demo1(void)
 
     cout << "delete edge(1, 2): " << mGraph.removeEdge(1, 2) << endl;
     cout << mGraph.getEdge(1, 2) << endl;
+#endif
+    MatrixGraph<9, char, int> graph;
+    const char* pVertexData = "ABCDEFGHI";
+
+    for (int i = 0; i < 9; i++)
+    {
+        graph.setVertex(i, pVertexData[i]);
+    }
+
+    graph.setEdge(0, 1, 0);
+    graph.setEdge(1, 0, 0);
+
+    graph.setEdge(0, 3, 0);
+    graph.setEdge(3, 0, 0);
+
+    graph.setEdge(0, 4, 0);
+    graph.setEdge(4, 0, 0);
+
+    graph.setEdge(1, 2, 0);
+    graph.setEdge(2, 1, 0);
+
+    graph.setEdge(1, 4, 0);
+    graph.setEdge(4, 1, 0);
+
+    graph.setEdge(2, 5, 0);
+    graph.setEdge(5, 2, 0);
+
+    graph.setEdge(3, 6, 0);
+    graph.setEdge(6, 3, 0);
+
+    graph.setEdge(4, 6, 0);
+    graph.setEdge(6, 4, 0);
+
+    graph.setEdge(6, 7, 0);
+    graph.setEdge(7, 6, 0);
+
+    graph.setEdge(7, 8, 0);
+    graph.setEdge(8, 7, 0);
+
+    //SharedPointer< Array<int> > pArray = graph.breadthFirstSearch(0);
+    SharedPointer< Array<int> > pArray = graph.depthFirstSearch(0);
+
+    for (int i = 0; i < pArray->length(); i++)
+    {
+        cout << (*pArray)[i] << " ";
+    }
+
+    cout << endl;
+
 }
 
 void LinkListGraph_demo(void)
 {
+    LinkListGraph<char, int> graph;
 
+    graph.addVertex('A');
+    graph.addVertex('B');
+    graph.addVertex('C');
+    graph.addVertex('D');
+
+    graph.setEdge(0, 1, 5);
+    graph.setEdge(0, 3, 5);
+    graph.setEdge(1, 2, 8);
+    graph.setEdge(2, 3, 2);
+    graph.setEdge(3, 1, 9);
+
+    for (int i = 0; i < graph.vertexCount(); i++)
+    {
+        cout << i << " : " << graph.getVertex(i) << endl;
+    }
+
+    cout << "W(0, 1) : " << graph.getEdge(0, 1) << endl;
+    cout << "W(0, 3) : " << graph.getEdge(0, 3) << endl;
+    cout << "W(1, 2) : " << graph.getEdge(1, 2) << endl;
+    cout << "W(2, 3) : " << graph.getEdge(2, 3) << endl;
+    cout << "W(3, 1) : " << graph.getEdge(3, 1) << endl;
+
+    cout << "edgeCount : " << graph.edgeCount() << endl;
+
+    //graph.removeEdge(3, 1);
+
+    //cout << "edgeCount : " << graph.edgeCount() << endl;
+
+    SharedPointer< Array<int> > sp = graph.getAdjacent(0);
+
+    for (int i = 0; i < sp->length(); i++)
+    {
+        cout << (*sp)[i] << endl;
+    }
+
+    cout << "inDegree(1) : " << graph.inDegree(1) << endl;
+    cout << "outDegree(1) : " << graph.outDegree(1) << endl;
+    cout << "TDegree(1) : " << graph.TDegree(1) << endl;
+
+    graph.removeVertex();
+
+    cout << "edgeCount : " << graph.edgeCount() << endl;
+
+    cout << "W(2, 3) : " << graph.getEdge(2, 3) << endl;
 }
 
 }
