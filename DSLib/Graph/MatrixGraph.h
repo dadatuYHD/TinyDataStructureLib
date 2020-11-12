@@ -5,15 +5,11 @@
 
 namespace DSLib {
 
-#define INF 1 << 20
-
 /*************************************************************
  * Function   : Create the directed graph by adjacency matrix
  * Description:
  * W:0、INF、Positive number
- *               0: if the vertex number is dfiffent and
- *                  this graph is undirected graph, it
- *                  is vertex itself
+ *               0: Two vertices are same as or No weight value
  *             INF: No edge between vertex
  * Positive number: The weight of the edge between two vertex
  * ***********************************************************
@@ -110,7 +106,7 @@ public:
 
             for (int j = 0; j < this->vertexCount(); j++)
             {
-                if ( m_pEdges[i][j] && (*(m_pEdges[i][j]) != INF) )
+                if ( m_pEdges[i][j] && (*(m_pEdges[i][j]) != INF))
                 {
                     vertexCount++;
                 }
@@ -124,7 +120,7 @@ public:
                 {
                     for (int j =0, k = 0; j < this->vertexCount(); j++)
                     {
-                        if ( m_pEdges[i][j] && (*(m_pEdges[i][j]) != INF) )
+                        if ( m_pEdges[i][j] && (*(m_pEdges[i][j]) != INF))
                         {
                             pRet->set(k++, j);
                         }
@@ -146,6 +142,13 @@ public:
         }
 
         return pRet;
+    }
+
+    bool isAdjacent(int i, int j)
+    {
+         return (0 <= i) && (i < vertexCount()) && (0 <= j) &&
+                (j < vertexCount()) && (m_pEdges[i][j] != nullptr) &&
+                (*m_pEdges[i][j]) != INF;
     }
 
     W getEdge(int i, int j)
@@ -260,7 +263,7 @@ public:
         {
             for (int j = 0; j < this->vertexCount(); j++)
             {
-                if ( m_pEdges[i][j] && (*(m_pEdges[i][j]) != INF) )
+                if ( m_pEdges[i][j] && (*(m_pEdges[i][j]) != INF))
                 {
                     ret++;
                 }
@@ -282,7 +285,7 @@ public:
         {
             for (int j = 0; j < this->vertexCount(); j++)
             {
-                if ( m_pEdges[j][i] && (*(m_pEdges[j][i]) != INF) )
+                if ( m_pEdges[j][i] && (*(m_pEdges[j][i]) != INF))
                 {
                     ret++;
                 }

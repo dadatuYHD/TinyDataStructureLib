@@ -754,6 +754,8 @@ void MatrixGraph_demo1(void)
     cout << "delete edge(1, 2): " << mGraph.removeEdge(1, 2) << endl;
     cout << mGraph.getEdge(1, 2) << endl;
 #endif
+
+#if 0
     MatrixGraph<9, char, int> graph;
     const char* pVertexData = "ABCDEFGHI";
 
@@ -802,6 +804,38 @@ void MatrixGraph_demo1(void)
 
     cout << endl;
 
+    graph.depthFirstSearch(graph, 0);
+#endif
+
+    MatrixGraph<4, int, int> graph;
+
+    for (int i = 0; i < 4; i++)
+    {
+        graph.setVertex(i, i);
+    }
+
+    graph.setEdge(0, 1, 1);
+    graph.setEdge(1, 0, 1);
+
+    graph.setEdge(0, 2, 3);
+    graph.setEdge(2, 0, 3);
+
+    graph.setEdge(1, 2, 1);
+    graph.setEdge(2, 1, 1);
+
+    graph.setEdge(3, 2, 1);
+    graph.setEdge(2, 3, 1);
+
+    graph.setEdge(1, 3, 4);
+    graph.setEdge(3, 1, 4);
+
+    SharedPointer< Array< Edge<int> > > pArray = graph.prim();
+
+    for (int i = 0; i < pArray->length(); i++)
+    {
+        cout << "Edge(" << (*pArray)[i].startVertex << ", " << (*pArray)[i].endVertex <<
+                ") Weight : " << (*pArray)[i].weight << endl;
+    }
 }
 
 void LinkListGraph_demo(void)

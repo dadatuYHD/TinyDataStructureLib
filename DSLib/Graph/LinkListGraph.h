@@ -9,40 +9,10 @@ template <typename V, typename W>
 class LinkListGraph : public Graph<V, W>
 {
 protected:
-    struct Edge : public Object
-    {
-        int startVertex;         /*storage the start vertex number */
-        int endVertex;           /*storage the end vertex number */
-        W weight;                /*The weight about the edge*/
-
-        Edge(int i = -1, int j = -1)
-        {
-            startVertex = i;
-            endVertex   = j;
-        }
-
-        Edge(int i, int j, const W& value)
-        {
-            startVertex = i;
-            endVertex   = j;
-            weight      = value;
-        }
-
-        bool operator == (const Edge& obj)
-        {
-            return ((startVertex == obj.startVertex) && (endVertex == obj.endVertex));
-        }
-
-        bool operator != (const Edge& obj)
-        {
-            return !(*this == obj);
-        }
-    };
-
     struct Vertex : public Object
     {
         V* m_pVertexData;            /*storage the vertex value */
-        LinkList< Edge > edge;   /*the edge which adjacent the vertex*/
+        LinkList< Edge<W> > edge;   /*the edge which adjacent the vertex*/
 
         Vertex()
         {
@@ -176,7 +146,7 @@ public:
             {
                 for (int i = (m_ajLinkList.move(0), 0); !m_ajLinkList.end(); m_ajLinkList.next(), i++)
                 {
-                    int pos = ((m_ajLinkList.current())->edge).find(Edge(i, index));
+                    int pos = ((m_ajLinkList.current())->edge).find(Edge<W>(i, index));
 
                     if (pos >= 0)
                     {
@@ -237,6 +207,12 @@ public:
         return pRet;
     }
 
+    bool isAdjacent(int i, int j)
+    {
+        return (0 <= i) && (i < vertexCount()) && (0 <= j) &&
+               (j < vertexCount()) && ((m_ajLinkList.get(i)->edge.find(Edge<W>(i, j)) >= 0));
+    }
+
     W getEdge(int i, int j)
     {
         W weight;
@@ -257,7 +233,7 @@ public:
         if (ret)
         {
             Vertex* pVertex = m_ajLinkList.get(i);
-            int pos = (pVertex->edge).find(Edge(i, j));
+            int pos = (pVertex->edge).find(Edge<W>(i, j));
 
             if (pos >= 0)
             {
@@ -280,15 +256,15 @@ public:
         if (ret)
         {
             Vertex* pVertex = m_ajLinkList.get(i);
-            int pos = (pVertex->edge).find(Edge(i, j));
+            int pos = (pVertex->edge).find(Edge<W>(i, j));
 
             if (pos >= 0)
             {
-                ret = (pVertex->edge).set(pos, Edge(i, j, value));
+                ret = (pVertex->edge).set(pos, Edge<W>(i, j, value));
             }
             else
             {
-                ret = (pVertex->edge).insert(0, Edge(i ,j, value));
+                ret = (pVertex->edge).insert(0, Edge<W>(i ,j, value));
             }
         }
 
@@ -303,7 +279,7 @@ public:
         if (ret)
         {
             Vertex* pVertex = m_ajLinkList.get(i);
-            int pos = (pVertex->edge).find(Edge(i, j));
+            int pos = (pVertex->edge).find(Edge<W>(i, j));
 
             if (pos >= 0)
             {
@@ -361,7 +337,7 @@ public:
         {
             for (int j = (m_ajLinkList.move(0), 0); !m_ajLinkList.end(); m_ajLinkList.next(), j++)
             {
-                LinkList<Edge>& edge = (m_ajLinkList.current())->edge;
+                LinkList< Edge<W> >& edge = (m_ajLinkList.current())->edge;
 
                 for (edge.move(0); !(edge.end()); edge.next())
                 {

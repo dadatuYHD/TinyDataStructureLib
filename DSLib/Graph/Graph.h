@@ -13,7 +13,40 @@
 
 
 
-namespace DSLib {
+namespace DSLib { 
+
+#define INF 1 << 20
+
+template <typename W>
+struct Edge : public Object
+{
+    int startVertex;         /*storage the start vertex number */
+    int endVertex;           /*storage the end vertex number */
+    W weight;                /*The weight about the edge*/
+
+    Edge(int i = -1, int j = -1)
+    {
+        startVertex = i;
+        endVertex   = j;
+    }
+
+    Edge(int i, int j, const W& value)
+    {
+        startVertex = i;
+        endVertex   = j;
+        weight      = value;
+    }
+
+    bool operator == (const Edge& obj)
+    {
+        return ((startVertex == obj.startVertex) && (endVertex == obj.endVertex));
+    }
+
+    bool operator != (const Edge& obj)
+    {
+        return !(*this == obj);
+    }
+};
 
 template <typename V, typename W>
 class Graph: public Object
@@ -38,10 +71,39 @@ protected:
 
         return pArray;
     }
+
+    void depthFirstSearch(Graph<V, W>& graph, int startVertex, Array<bool>& isVisted)
+    {
+        if ( (0 <= startVertex) && (startVertex < vertexCount()) )
+        {
+            if (!isVisted[startVertex])
+            {
+                cout << startVertex << endl;
+
+                isVisted[startVertex] = true;
+
+                SharedPointer< Array<int> > pAdjacent = graph.getAdjacent(startVertex);
+
+                for (int i = 0; i < pAdjacent->length(); i++)
+                {
+                    if (!isVisted[(*pAdjacent)[i]])
+                    {
+                        depthFirstSearch(graph, (*pAdjacent)[i], isVisted);
+                    }
+                }
+            }
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "Index startVertex is invalid ...");
+        }
+    }
+
 public:
     virtual V getVertex(int i) = 0;
     virtual bool getVertex(int i, V& value) = 0;
     virtual bool setVertex(int i, const V& value) = 0;
+    virtual bool isAdjacent(int i, int j) = 0;
     virtual SharedPointer< Array<int> > getAdjacent(int i) = 0;
     virtual W getEdge(int i, int j) = 0;
     virtual bool getEdge(int i, int j, W& value) = 0;
@@ -58,6 +120,28 @@ public:
     virtual int TDegree(int i)
     {
         return outDegree(i) + inDegree(i);
+    }
+
+    /*************************************************
+     *   judge the directed graph wheahter can as the
+     *    undirected graph
+     *************************************************/
+    bool asUndirected(void)
+    {
+        bool ret = false;
+
+        for (int i = 0; i < vertexCount(); i++)
+        {
+            for (int j = 0; j < vertexCount(); j++)
+            {
+                if (isAdjacent(i, j))
+                {
+                    ret = isAdjacent(j, i) && (getEdge(i, j) == getEdge(j, i));
+                }
+            }
+        }
+
+        return ret;
     }
 
     /***********************************************
@@ -156,6 +240,96 @@ public:
         }
 
         return ret;
+    }
+
+
+
+    void depthFirstSearch(Graph<V, W>& graph, int startVertex)
+    {
+        DynamicArray<bool> isVisted(vertexCount());
+
+        for (int i = 0; i < isVisted.length(); i++)
+        {
+            isVisted[i] = false;
+        }
+
+        depthFirstSearch(graph, startVertex, isVisted);
+    }
+
+    SharedPointer< Array< Edge<W> > > prim()
+    {
+        LinkQueue< Edge<W> > retEdge;
+
+        if (asUndirected())
+        {
+            DynamicArray<bool> mark(vertexCount());
+            DynamicArray<W> cost(vertexCount());
+            DynamicArray<int> adjVex(vertexCount());
+            int startVertex = 0;
+            bool end = false;
+
+            for (int i = 0; i < mark.length(); i++)
+            {
+                mark[i]   = false;
+                cost[i]   = INF;
+                adjVex[i] = -1;
+            }
+
+            mark[startVertex] = true;
+            SharedPointer< Array<int> > pArray = getAdjacent(startVertex);
+
+            for (int i = 0; i < pArray->length(); i++)
+            {
+                cost[(*pArray)[i]] = getEdge(startVertex, (*pArray)[i]);
+                adjVex[(*pArray)[i]] = startVertex;
+            }
+
+            for (int i = 0; (i < vertexCount()) && !end; i++)
+            {
+                W edgeWeight = INF;
+                int vertexIndex = -1;
+
+                for (int j = 0; j < vertexCount(); j++)
+                {
+                    if (!mark[j] && (cost[j] < edgeWeight))
+                    {
+                        edgeWeight = cost[j];
+                        vertexIndex = j;
+                    }
+                }
+
+                end = (vertexIndex == -1);
+
+                if (!end)
+                {
+                    retEdge.add( Edge<W>(adjVex[vertexIndex], vertexIndex, getEdge(adjVex[vertexIndex], vertexIndex)) );
+
+                    mark[vertexIndex] = true;
+
+                    pArray = getAdjacent(vertexIndex);
+
+                    for (int i = 0; i < pArray->length(); i++)
+                    {
+                        if ( (!mark[(*pArray)[i]]) && (getEdge(vertexIndex, (*pArray)[i]) < cost[(*pArray)[i]]) )
+                        {
+                            cost[(*pArray)[i]] = getEdge(vertexIndex, (*pArray)[i]);
+                            adjVex[(*pArray)[i]] = vertexIndex;
+                        }
+                    }
+                }
+            }
+
+            if (retEdge.length() != (vertexCount() - 1))
+            {
+                THROW_EXCEPTION(InvalidOperationException, "No enough edge for prim operation ...");
+            }
+
+            return toArray(retEdge);
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "Prim operation is for undirected graph only ...");
+        }
     }
 };
 
