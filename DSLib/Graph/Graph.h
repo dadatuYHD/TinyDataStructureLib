@@ -10,6 +10,7 @@
 #include "Queue/LinkQueue.h"
 #include "Stack/LinkStack.h"
 #include "Exception/Exception.h"
+#include "Algorithm/Sort.h"
 
 
 
@@ -45,6 +46,26 @@ struct Edge : public Object
     bool operator != (const Edge& obj)
     {
         return !(*this == obj);
+    }
+
+    bool operator > (const Edge& obj)
+    {
+        return (weight > obj.weight);
+    }
+
+    bool operator >= (const Edge& obj)
+    {
+        return (weight >= obj.weight);
+    }
+
+    bool operator < (const Edge& obj)
+    {
+        return (weight < obj.weight);
+    }
+
+    bool operator <= (const Edge& obj)
+    {
+        return (weight <= obj.weight);
     }
 };
 
@@ -97,6 +118,45 @@ protected:
         {
             THROW_EXCEPTION(InvalidOperationException, "Index startVertex is invalid ...");
         }
+    }
+
+    SharedPointer< Array<Edge<W>> > getUndirectedGraphEdges(void)
+    {
+        DynamicArray< Edge<W> > ret = nullptr;
+
+        if (asUndirected())
+        {
+            LinkQueue< Edge<W> > queue;
+
+            for (int i = 0; i < vertexCount(); i++)
+            {
+                for (int j = 0; j < vertexCount(); j++)
+                {
+                    if (isAdjacent(i, j))
+                    {
+                        queue.add(Edge<W>(i, j, getEdge(i, j)));
+                    }
+                }
+            }
+
+            ret = toArray(queue);
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "This function is for undirected graph ...");
+        }
+
+        return ret;
+    }
+
+    int find(Array<int>& pre, int v)
+    {
+        while (-1 != pre[v])
+        {
+            v = pre[v];
+        }
+
+        return v;
     }
 
 public:
@@ -330,6 +390,31 @@ public:
         {
             THROW_EXCEPTION(InvalidOperationException, "Prim operation is for undirected graph only ...");
         }
+    }
+
+    SharedPointer< Array< Edge<W> > > kruskal(void)
+    {
+        LinkQueue< Edge<W> > ret;
+        SharedPointer< Array<Edge<W>> > edges = getUndirectedGraphEdges();
+        DynamicArray<int> pre(vertexCount());
+
+        for (int i = 0; i < pre.length(); i++)
+        {
+            pre[i] = -1;
+        }
+
+        Sort::shell(*edges);
+
+        for ( int i = 0; (i < edges->length()) && (ret.length() < (vertexCount() - 1)); i++)
+        {
+            int startVertex = find(pre, (*edges)[i].startVertex);
+            int endVertex = find(pre, (*edges)[i].endVertex);
+
+            pre[startVertex] = endVertex;
+        }
+
+
+
     }
 };
 
