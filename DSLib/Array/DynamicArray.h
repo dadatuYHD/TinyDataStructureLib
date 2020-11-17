@@ -59,6 +59,10 @@ protected:
         }
     }
 public:
+    DynamicArray()
+    {
+
+    }
     DynamicArray(int length)
     {
         init(new T[length], length);

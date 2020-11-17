@@ -807,6 +807,7 @@ void MatrixGraph_demo1(void)
     graph.depthFirstSearch(graph, 0);
 #endif
 
+#if 0
     MatrixGraph<4, int, int> graph;
 
     for (int i = 0; i < 4; i++)
@@ -829,12 +830,73 @@ void MatrixGraph_demo1(void)
     graph.setEdge(1, 3, 4);
     graph.setEdge(3, 1, 4);
 
-    SharedPointer< Array< Edge<int> > > pArray = graph.prim();
+    SharedPointer< Array< Edge<int> > > pArray = graph.kruskal();
 
     for (int i = 0; i < pArray->length(); i++)
     {
         cout << "Edge(" << (*pArray)[i].startVertex << ", " << (*pArray)[i].endVertex <<
                 ") Weight : " << (*pArray)[i].weight << endl;
+    }
+#endif
+
+#if 0
+    MatrixGraph<5, int, int> graph;
+
+    for (int i = 0; i < 5; i++)
+    {
+        graph.setVertex(i, i);
+    }
+
+    graph.setEdge(0, 0, 0);
+    graph.setEdge(1, 1, 0);
+    graph.setEdge(2, 2, 0);
+    graph.setEdge(3, 3, 0);
+    graph.setEdge(4, 4, 0);
+
+    graph.setEdge(0, 1, 10);
+    graph.setEdge(0, 3, 30);
+    graph.setEdge(0, 4, 100);
+    graph.setEdge(1, 2, 50);
+    graph.setEdge(2, 4, 10);
+    graph.setEdge(3, 2, 20);
+    graph.setEdge(3, 4, 60);
+
+
+    SharedPointer< Array<int> > pArray = graph.djikstra(0, 2);
+
+    for (int i = 0; i < pArray->length(); i++)
+    {
+        cout << (*pArray)[i] << endl;
+    }
+#endif
+
+    MatrixGraph<5, int, int> graph;
+
+    for (int i = 0; i < 5; i++)
+    {
+        graph.setVertex(i, i);
+    }
+
+    graph.setEdge(0, 0, 0);
+    graph.setEdge(1, 1, 0);
+    graph.setEdge(2, 2, 0);
+    graph.setEdge(3, 3, 0);
+    graph.setEdge(4, 4, 0);
+
+    graph.setEdge(0, 1, 10);
+    graph.setEdge(0, 3, 30);
+    graph.setEdge(0, 4, 100);
+    graph.setEdge(1, 2, 50);
+    graph.setEdge(2, 4, 10);
+    graph.setEdge(3, 2, 20);
+    graph.setEdge(3, 4, 60);
+
+
+    SharedPointer< Array<int> > pArray = graph.floyd(0, 4);
+
+    for (int i = 0; i < pArray->length(); i++)
+    {
+        cout << (*pArray)[i] << endl;
     }
 }
 

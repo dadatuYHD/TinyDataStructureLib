@@ -122,7 +122,7 @@ protected:
 
     SharedPointer< Array<Edge<W>> > getUndirectedGraphEdges(void)
     {
-        DynamicArray< Edge<W> > ret = nullptr;
+        DynamicArray< Edge<W> >* ret = nullptr;
 
         if (asUndirected())
         {
@@ -157,6 +157,27 @@ protected:
         }
 
         return v;
+    }
+
+    bool isOpenListNull(DynamicArray<bool>& openList)
+    {
+        int count = 0;
+        bool ret = true;
+
+        for (int i = 0; i < openList.length(); i++)
+        {
+            if (openList[i] == true)
+            {
+                count++;
+            }
+        }
+
+        if (count)
+        {
+            ret = false;
+        }
+
+        return ret;
     }
 
 public:
@@ -410,11 +431,179 @@ public:
             int startVertex = find(pre, (*edges)[i].startVertex);
             int endVertex = find(pre, (*edges)[i].endVertex);
 
-            pre[startVertex] = endVertex;
+            if (startVertex != endVertex)
+            {
+                pre[startVertex] = endVertex;
+
+                ret.add((*edges)[i]);
+            }
+        }
+
+        if ((ret.length()) != (vertexCount() - 1))
+        {
+            THROW_EXCEPTION(InvalidOperationException, "kruskal operation is invalid ...");
         }
 
 
+        return toArray(ret);
+    }
 
+    SharedPointer< Array<int> > djikstra(int startVertex, int endVertex)
+    {
+        LinkQueue<int> ret;
+
+        if ( (0 <= startVertex) && (startVertex < vertexCount()) &&
+             (0 <= endVertex)   && (endVertex   < vertexCount()) )
+        {
+            DynamicArray<W>    weight(vertexCount());
+            DynamicArray<bool> openList(vertexCount());
+            DynamicArray<bool> closeList(vertexCount());
+            DynamicArray<int> path(vertexCount());
+
+
+            for (int i = 0; i < vertexCount(); i++)
+            {
+                openList[i] = false;
+                closeList[i] = false;
+                path[i] = -1;
+                weight[i] = isAdjacent(startVertex, i) ? getEdge(startVertex, i) : INF;
+            }
+
+            openList[startVertex] = true;
+            int tempVertex = startVertex;
+            W weightValue = INF;
+            int expectedVertex = -1;
+
+            while (!isOpenListNull(openList))
+            {
+                openList[tempVertex] = false;
+                closeList[tempVertex] = true;
+
+
+                if (tempVertex == endVertex)
+                {
+                    break;
+                }
+
+                for (int i = 0; i < vertexCount(); i++)
+                {
+                    if (isAdjacent(tempVertex, i) && !closeList[i])
+                    {
+                        if ( (weight[i] == INF) || (weight[i] >= weight[tempVertex] + getEdge(tempVertex, i)) )
+                        {
+                            weight[i] = weight[tempVertex] + getEdge(tempVertex, i);
+                            path[i] = tempVertex;
+                        }
+
+                        openList[i] = true;
+                    }
+                }
+
+                weightValue = INF;
+                for (int i = 0; i < vertexCount(); i++)
+                {
+                    if ((weight[i] < weightValue) && openList[i])
+                    {
+                        weightValue = weight[i];
+                        expectedVertex = i;
+                    }
+                }
+
+                if (-1 == expectedVertex)
+                {
+                    break;
+                }
+
+                tempVertex = expectedVertex;
+            }
+
+            LinkStack<int> stack;
+            for (int i = endVertex; i != -1; i = path[i])
+            {
+                stack.push(i);
+            }
+
+            while (stack.size() > 0)
+            {
+                ret.add(stack.top());
+                stack.pop();
+            }
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "Index <start, end> is invalid ...");
+        }
+
+        if (ret.length() < 2)
+        {
+            THROW_EXCEPTION(ArithmeticException, "There is no path form start to end ");
+        }
+
+        return toArray(ret);
+    }
+
+    SharedPointer< Array<int> > floyd(int startVertex, int endVertex)
+    {
+        LinkQueue<int> ret;
+
+        if ( (0 <= startVertex) && (startVertex < vertexCount()) &&
+             (0 <= endVertex)   && (endVertex   < vertexCount()) )
+        {
+            DynamicArray< DynamicArray<W> > weight(vertexCount());
+            DynamicArray< DynamicArray<int> > path(vertexCount());
+
+            for (int i = 0; i < vertexCount(); i++)
+            {
+                weight[i].resize(vertexCount());
+                path[i].resize(vertexCount());
+            }
+
+            for (int i = 0; i < vertexCount(); i++)
+            {
+                for (int j = 0; j < vertexCount(); j++)
+                {
+                    weight[i][j] = isAdjacent(i, j) ? getEdge(i, j) : INF;
+                    path[i][j]   = isAdjacent(i, j) ? j : -1;
+                }
+            }
+
+            for (int transitNode = 0; transitNode < vertexCount(); transitNode++)
+            {
+                for (int i = 0; i < vertexCount(); i++)
+                {
+                    for (int j = 0; j < vertexCount(); j++)
+                    {
+                        if ( weight[i][j] > (weight[i][transitNode] + weight[transitNode][j]) )
+                        {
+                            weight[i][j] = weight[i][transitNode] + weight[transitNode][j];
+                            path[i][j]   = path[i][transitNode];
+                        }
+                    }
+                }
+            }
+
+            while ((startVertex != -1) && (startVertex != endVertex))
+            {
+                ret.add(startVertex);
+                startVertex = path[startVertex][endVertex];
+            }
+
+            if (startVertex != -1)
+            {
+                ret.add(startVertex);
+            }
+        }
+        else
+        {
+            THROW_EXCEPTION(InvalidOperationException, "Index <start, end> is invalid ...");
+        }
+
+        if (ret.length() < 2)
+        {
+            THROW_EXCEPTION(ArithmeticException, "There is no path form start to end ");
+        }
+
+        return toArray(ret);
     }
 };
 
