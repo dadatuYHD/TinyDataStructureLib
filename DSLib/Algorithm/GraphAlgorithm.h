@@ -8,10 +8,9 @@ namespace DSLib {
 class GraphAlgorithm : public Object
 {
 protected:
-    static int searchMaxLocalPath(Graph<int, int>& graph, int value, Array<int>& count, Array<int>& path, Array<bool>& mark)
+    static int searchMaxLocalPath(Graph<int, int>& graph, int value, Array<int>& count, Array< LinkList<int>* >& path, Array<bool>& mark)
     {
         int ret = 0;
-        int localMaxVertex = -1;
         SharedPointer< Array<int> > pAdjacent = graph.getAdjacent(value);
 
         for (int i = 0; i < pAdjacent->length(); i++)
@@ -30,7 +29,14 @@ protected:
             if (ret < localMaxVertexNum)
             {
                 ret = localMaxVertexNum;
-                localMaxVertex = (*pAdjacent)[i];
+            }
+        }
+
+        for (int i = 0; i < pAdjacent->length(); i++)
+        {
+            if (ret == count[(*pAdjacent)[i]])
+            {
+                path[value]->insert((*pAdjacent)[i]);
             }
         }
 
@@ -38,7 +44,6 @@ protected:
 
         count[value] = ret;
         mark[value]  = true;
-        path[value]  = localMaxVertex;
 
         return ret;
     }
@@ -66,7 +71,7 @@ protected:
         return pRet;
     }
 
-    static void initArray(Array<int>& count, Array<int>& path, Array<bool>& mark)
+    static void initArray(Array<int>& count, Array< LinkList<int>* >& path, Array<bool>& mark)
     {
         for (int i = 0; i < count.length(); i++)
         {
@@ -75,7 +80,7 @@ protected:
 
         for (int i = 0; i < path.length(); i++)
         {
-            path[i] = -1;
+            path[i] = new LinkList<int>();
         }
 
         for (int i = 0; i < mark.length(); i++)
@@ -84,7 +89,32 @@ protected:
         }
     }
 
-    static void printMaxPath(SharedPointer< Graph<int, int> >& graph, Array<int>& count, Array<int>& path)
+    static void printPath(SharedPointer< Graph<int, int> >& graph, int value, Array< LinkList<int>* >& path, LinkList<int>& cp)
+    {
+        cp.insert(value);
+
+        if (path[value]->length() > 0)
+        {
+            for (path[value]->move(0); !path[value]->end(); path[value]->next())
+            {
+                printPath(graph, path[value]->current(), path, cp);
+            }
+        }
+        else
+        {
+            cout << "Element : ";
+            for (cp.move(0); !cp.end(); cp.next())
+            {
+                cout << graph->getVertex(cp.current()) << " ";
+            }
+
+            cout << endl;
+        }
+
+        cp.remove(cp.length() - 1);
+    }
+
+    static void printMaxPath(SharedPointer< Graph<int, int> >& graph, Array<int>& count, Array< LinkList<int>* >& path)
     {
         int maxSeqNum = 0;
 
@@ -100,23 +130,16 @@ protected:
 
         for (int i = 0; i < count.length(); i++)
         {
+            LinkList<int> cp;
+
             if (maxSeqNum == count[i])
             {
-                cout << "globalMaxVertex : " << graph->getVertex(i) << endl;
-                cout << "global the longest not descending sequence : " << graph->getVertex(i) << "-->";
-
-                for (int j = path[i]; j != -1; j = path[j])
-                {
-                    cout << graph->getVertex(j) << "-->";
-                }
-
-                cout << "null" << endl;
-                cout << endl;
+                printPath(graph, i, path, cp);
             }
         }
     }
 
-    static void searchMaxLocalPath(Graph<int, int>& graph, Array<int>& count, Array<int>& path, Array<bool>& mark)
+    static void searchMaxLocalPath(Graph<int, int>& graph, Array<int>& count, Array< LinkList<int>* >& path, Array<bool>& mark)
     {
         for (int i = 0; i < graph.vertexCount(); i++)
         {
@@ -131,7 +154,7 @@ public:
     static void noDscendingSeq(int* pSeq, int len)
     {
         DynamicArray<int> count(len);
-        DynamicArray<int> path(len);
+        DynamicArray< LinkList<int>* > path(len);
         DynamicArray<bool> mark(len);
         SharedPointer< Graph<int, int> > graph;
 

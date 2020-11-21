@@ -952,7 +952,7 @@ void LinkListGraph_demo(void)
 
 void GraphAlgorithm_demo(void)
 {
-    int seq[] = {3, 18, 7, 14, 10, 12, 23, 41, 16, 24};
+    int seq[] = {5, 4, 3, 2, 1};
 
     GraphAlgorithm::noDscendingSeq(seq, sizeof(seq)/sizeof(*seq));
 }
