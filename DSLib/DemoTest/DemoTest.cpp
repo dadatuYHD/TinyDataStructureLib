@@ -950,4 +950,11 @@ void LinkListGraph_demo(void)
     cout << "W(2, 3) : " << graph.getEdge(2, 3) << endl;
 }
 
+void GraphAlgorithm_demo(void)
+{
+    int seq[] = {3, 18, 7, 14, 10, 12, 23, 41, 16, 24};
+
+    GraphAlgorithm::noDscendingSeq(seq, sizeof(seq)/sizeof(*seq));
+}
+
 }

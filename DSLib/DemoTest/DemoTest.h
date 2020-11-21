@@ -15,6 +15,7 @@
 #include "Algorithm/Recursion.h"
 #include "Algorithm/QueueSolution.h"
 #include "Algorithm/Sort.h"
+#include "Algorithm/GraphAlgorithm.h"
 #include "Array/DynamicArray.h"
 #include "Array/StaticArray.h"
 #include "Tree/GTree.h"
@@ -44,6 +45,7 @@ void btree_demo2(void);
 void btreeAlgorithm_demo(void);
 void MatrixGraph_demo1(void);
 void LinkListGraph_demo(void);
+void GraphAlgorithm_demo(void);
 
 }
 

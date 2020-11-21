@@ -179,7 +179,6 @@ protected:
 
         return ret;
     }
-
 public:
     virtual V getVertex(int i) = 0;
     virtual bool getVertex(int i, V& value) = 0;
