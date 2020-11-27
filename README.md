@@ -17,7 +17,7 @@
 * Graph：通过邻接矩阵和邻接链表实现的图
 * DemoTest：用来测试的案例
 
-### 类图
+### 类继承关系图
 ![text](https://github.com/dadatuYHD/TinyDataStructureLib/blob/master/Picture/Object.png?raw=true)
 
 
