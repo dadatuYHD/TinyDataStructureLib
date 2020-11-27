@@ -151,6 +151,13 @@ protected:
     }
 
 public:
+    /*****************************************************************
+     * Description    :find the longest non-dscending sequence
+     *                 by constructing a graph
+     * Arg1[In][pSeq] :The array first address
+     * Arg2[In][len]  :the length of array
+     * return         :void
+     *****************************************************************/
     static void noDscendingSeq(int* pSeq, int len)
     {
         DynamicArray<int> count(len);

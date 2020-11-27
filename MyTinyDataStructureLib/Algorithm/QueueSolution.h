@@ -10,8 +10,11 @@ using namespace std;
 
 namespace MyTiny_DSLib {
 
-
-//Eight Queens problem solution by Backtracking
+/************************************************
+ *
+ * Eight Queens problem solution by Backtracking
+ *
+ ***********************************************/
 #define CHESSBOARD_FREE_SPACE 0
 #define QUEUE                 1
 #define CHESSBOARD_BOUNDARY   2
