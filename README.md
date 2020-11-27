@@ -19,7 +19,7 @@
 
 ### 类图
 
-![Object](F:\PersonalProject\TinyDataStructureLib\Picture\Object.png)
+![Object](TinyDataStructureLib\Picture\Object.png)
 
 
 
