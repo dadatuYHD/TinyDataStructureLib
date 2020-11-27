@@ -66,6 +66,7 @@ file_client
 
 #QT project files
 *.pro*
+*.pro
 build-*-Desktop*MinGW_64_bit-Debug
 
 # This file is used to ignore files which are generated
