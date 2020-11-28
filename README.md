@@ -1,6 +1,6 @@
 # TinyDataStructureLib
 
-### 通过C++实现的轻量级数据结构库，帮助初学者快速实践数据结构理论，增强C++编程能力
+* 通过C++实现的**轻量级数据**结构库，帮助初学者**快速实践数据结构理论**，增强C++编程能力
 
 ## 目录
 
@@ -14,13 +14,15 @@
 * Stack：包含链式栈、静态栈、通过队列实现的栈等相关的类
 * Queue：包含链式队列、静态队列、通过栈实现的队列等相关的类
 * tree：包含通用树、二叉树等相关类的实现
-* Graph：通过邻接矩阵和邻接链表实现的图
-* DemoTest：用来测试的案例
+* Graph：通过邻接矩阵和邻接链表实现的图相关类
+* DemoTest：用来测试的例程
 
 ### 类继承关系图
 ![text](https://github.com/dadatuYHD/TinyDataStructureLib/blob/master/Picture/Object.png?raw=true)
 
+### 例程使用方法
 
+* 直接在main.cpp里面调用DemoTest.cpp内的函数即可
 
 
 
