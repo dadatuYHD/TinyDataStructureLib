@@ -54,7 +54,7 @@ public:
             m_length--;
         }
 
-        return m_length;
+        return ret;
     }
     bool set(int i, const T& e)
     {

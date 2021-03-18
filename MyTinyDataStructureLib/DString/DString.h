@@ -66,7 +66,7 @@ public:
     static int kmp(const char * ds, const char * src);
     static int * MakePmt(const char * src);
     int indexOf(const char * s) const;
-    int indexOf(const DString& s) const;\
+    int indexOf(const DString& s) const;
 
     //Delete the specified substring in the string
     DString& remove(int i, int len);
@@ -80,7 +80,6 @@ public:
 
     //create ths specified substring from ths string
     DString SubString(int i, int len) const;
-
 
     ~DString();
 };
